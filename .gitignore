@@ -1,2 +1,25 @@
 implementation_plan.md
 team_development_guide.md
+
+# Secrets
+.env
+.env.*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual Environments (uv, venv)
+.venv/
+
+# OS
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
+
+# Logs
+*.log
