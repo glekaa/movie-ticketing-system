@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
@@ -18,11 +18,18 @@ router = APIRouter(
 
 @router.get("/", response_model=list[MovieResponse])
 async def get_movies(
-    skip: int = 0, limit: int = 100, db: AsyncSession = Depends(get_db)
+    skip: int = 0,
+    limit: int = 100,
+    genres: list[str] = Query(default=None, description="Filter by genre slugs"),
+    db: AsyncSession = Depends(get_db),
 ):
-    result = await db.execute(
-        select(Movie).options(selectinload(Movie.genres)).offset(skip).limit(limit)
-    )
+    query = select(Movie).options(selectinload(Movie.genres))
+
+    if genres:
+        query = query.join(Movie.genres).where(Genre.slug.in_(genres)).distinct()
+
+    query = query.offset(skip).limit(limit)
+    result = await db.execute(query)
     movies = result.scalars().all()
     return movies
 
