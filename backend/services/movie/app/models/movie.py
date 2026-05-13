@@ -4,7 +4,7 @@ from datetime import date, datetime, timezone
 
 from sqlalchemy import Date, DateTime, Enum, Integer, String, Text
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
 
@@ -39,4 +39,8 @@ class Movie(Base):
         DateTime(timezone=True),
         default=lambda: datetime.now(timezone.utc),
         onupdate=lambda: datetime.now(timezone.utc),
+    )
+
+    genres: Mapped[list["Genre"]] = relationship(
+        "Genre", secondary="movie_genres", back_populates="movies"
     )

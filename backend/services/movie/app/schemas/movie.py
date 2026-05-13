@@ -4,6 +4,7 @@ from uuid import UUID
 from pydantic import BaseModel, ConfigDict
 
 from app.models.movie import MovieStatus
+from app.schemas.genre import GenreResponse
 
 
 class MovieBase(BaseModel):
@@ -16,7 +17,7 @@ class MovieBase(BaseModel):
 
 
 class MovieCreate(MovieBase):
-    pass
+    genre_ids: list[UUID] = []
 
 
 class MovieUpdate(BaseModel):
@@ -26,11 +27,13 @@ class MovieUpdate(BaseModel):
     duration_minutes: int | None = None
     release_date: date | None = None
     status: MovieStatus | None = None
+    genre_ids: list[UUID] | None = None
 
 
 class MovieResponse(MovieBase):
     id: UUID
     created_at: datetime
     updated_at: datetime
+    genres: list[GenreResponse] = []
 
     model_config = ConfigDict(from_attributes=True)

@@ -1,4 +1,3 @@
-from typing import List
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -15,7 +14,7 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=List[MovieResponse])
+@router.get("/", response_model=list[MovieResponse])
 async def get_movies(
     skip: int = 0, limit: int = 100, db: AsyncSession = Depends(get_db)
 ):
