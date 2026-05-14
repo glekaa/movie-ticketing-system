@@ -7,7 +7,7 @@ const Hero = () => {
     const mockTags = [{ type: "primary", text: "Sci-Fi" }, { type: "primary", text: "Action" }, { type: "primary", text: "2h 46m" }, { type: "secondary", text: "PG-13" }]
 
     return (
-        <div className="relative w-full h-[90vh] overflow-hidden px-10 pb-20">
+        <div className="relative w-full h-[70vh] overflow-hidden px-10 pb-20">
             <div className="absolute inset-0"
                 style={{
                     backgroundImage: `url(${CinamaticHeroImage})`,
@@ -20,11 +20,11 @@ const Hero = () => {
             <div className="absolute inset-0 bg-gradient-to-r from-[#141313]/60 via-transparent to-transparent pointer-events-none" />
             <div className="h-full relative flex flex-col gap-2 justify-end items-start gap-8">
                 <div className="text-left max-w-lg">
-                    <h1 className="text-2xl md:text-5xl lg:text-6xl 2xl:text-8xl font-bold text-white">
+                    <h1 className="text-5xl font-bold text-white">
                         DUNE: PART TWO
                     </h1>
 
-                    <p className="text-lg 2xl:text-xl text-gray-300 leading-relaxed mt-4 max-w-3xl">
+                    <p className="text-md 2xl:text-lg text-gray-300 leading-relaxed mt-4 max-w-3xl">
                         Paul Atreides unites with Chani and the Fremen while on a warpath of revenge against the conspirators who destroyed his family.
                     </p>
                 </div>
