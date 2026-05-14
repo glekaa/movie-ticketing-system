@@ -3,7 +3,7 @@ import absoluteCinemaImg from '../assets/images/absolute_cinema (1).png';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-gradient-to-b from-[#141313] to-[#0a0807] border-t border-[#444748]/20 py-12 md:py-16 relative overflow-hidden">
+    <footer className="border-t border-[#444748]/20 py-12 md:py-16 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-start gap-12 relative z-10">
         
         {/* Brand & Copyright */}

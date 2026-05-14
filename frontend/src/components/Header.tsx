@@ -5,7 +5,7 @@ const Header = () => {
   const [activeTab, setActiveTab] = useState("Now Playing");
   const tabs = [{ text: "Now Playing", link: "#" }, { text: "Coming Soon", link: "#" }, { text: "Cinemas", link: "#" }];
   return (
-    <header className="w-full bg-gradient-to-b from-[#0a0807] to-[#141313] px-4 md:px-8 h-18 flex items-center justify-between">
+    <header className="w-full px-4 md:px-8 h-18 flex items-center justify-between">
       <div className="flex-shrink-0 w-32">
         <span className="text-3xl font-bold text-gray-300 tracking-tighter">absolute</span>
       </div>
