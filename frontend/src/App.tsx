@@ -1,14 +1,11 @@
-import Hero from './components/Hero';
-import Header from "./components/Header";
-import './App.css';
+import Layout from './Layout/Layout';
+import Main from "./Pages/Main/Main";
 
-function App() {
-
+const App = () => {
   return (
-    <>
-      <Header />
-      <Hero />
-    </>
+    <Layout>
+      <Main />
+    </Layout>
   )
 }
 
