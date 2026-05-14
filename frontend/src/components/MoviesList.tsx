@@ -1,27 +1,42 @@
 import MovieCard from "./MovieCard";
+import { useQuery } from "@tanstack/react-query";
+import { movieUserServices } from "../services/movieServices";
+import type { Movie } from "../types";
+import { TriangleAlert, Loader2 } from "lucide-react";
 
-const MoviesList = () => {
-    const movies = [
-        { id: 1, title: "The Matrix", genre: "Sci-Fi", duration: "2h 16m", imageUrl: "https://m.media-amazon.com/images/I/51EGds02hEL._SX300_SY450_QL70_ML2_.jpg" },
-        { id: 2, title: "The Matrix", genre: "Sci-Fi", duration: "2h 16m", imageUrl: "https://m.media-amazon.com/images/I/51EGds02hEL._SX300_SY450_QL70_ML2_.jpg" },
-        { id: 3, title: "The Matrix", genre: "Sci-Fi", duration: "2h 16m", imageUrl: "https://m.media-amazon.com/images/I/51EGds02hEL._SX300_SY450_QL70_ML2_.jpg" },
-        { id: 4, title: "The Matrix", genre: "Sci-Fi", duration: "2h 16m", imageUrl: "https://m.media-amazon.com/images/I/51EGds02hEL._SX300_SY450_QL70_ML2_.jpg" },
-    ];
+const MoviesList = ({ type }: { type: "now-playing" | "upcoming" }) => {
+    const queryFn = type === "now-playing" ? movieUserServices.getNowPlayingMovies : movieUserServices.getUpcomingMovies;
+
+    const { data: movies, isLoading, isError } = useQuery<Movie[]>({
+        queryKey: ["movies", type],
+        queryFn,
+    });
 
     return (
-        <div className="flex flex-col gap-8 md:gap-12 px-4 md:px-8">
+        <div className="flex flex-col gap-8 md:gap-12 px-4 md:px-8 mb-12">
             <h2 className="text-2xl md:text-3xl lg:text-3xl font-bold text-[#E5E2E1] tracking-wide">Now Playing</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {movies.map((movie) => (
-                    <MovieCard
-                        key={movie.id}
-                        title={movie.title}
-                        genre={movie.genre}
-                        duration={movie.duration}
-                        imageUrl={movie.imageUrl}
-                    />
-                ))}
-            </div>
+            {isLoading ? (
+                <div className="flex items-center justify-center gap-4">
+                    <Loader2 className="w-12 h-12 text-gray-500 animate-spin" />
+                    <p className="text-2xl text-gray-500">Loading movies</p>
+                </div>
+            ) : isError ? (
+                <div className="flex items-center justify-center gap-4">
+                    <TriangleAlert className="w-12 h-12 text-red-500" />
+                    <p className="text-2xl text-red-500">Error loading movies</p>
+                </div>
+            ) :
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {movies?.map((movie) => (
+                        <MovieCard
+                            key={movie.id}
+                            title={movie.title}
+                            genre={movie.genres[0]}
+                            duration={movie.duration_minutes}
+                            imageUrl={movie.poster_url}
+                        />
+                    ))}
+                </div>}
         </div>
     )
 }
