@@ -1,7 +1,7 @@
 interface MovieCardProps {
     title: string;
     genre: string;
-    duration: string;
+    duration: number;
     imageUrl: string;
 }
 
