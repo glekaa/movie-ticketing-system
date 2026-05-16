@@ -1,9 +1,12 @@
-import Header from "./components/Header";
+import Layout from './Layout/Layout';
+import Main from "./Pages/Main/Main";
 
-function App() {
-  return <>
-    <Header />
-  </>
+const App = () => {
+  return (
+    <Layout>
+      <Main />
+    </Layout>
+  )
 }
 
 export default App
