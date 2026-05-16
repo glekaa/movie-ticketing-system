@@ -2,6 +2,8 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict
 
+from app.schemas.screen import ScreenResponse
+
 
 class TheaterBase(BaseModel):
     name: str
@@ -14,5 +16,6 @@ class TheaterCreate(TheaterBase):
 
 class TheaterResponse(TheaterBase):
     id: UUID
+    screens: list[ScreenResponse]
 
     model_config = ConfigDict(from_attributes=True)
