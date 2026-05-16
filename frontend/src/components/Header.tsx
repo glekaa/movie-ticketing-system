@@ -1,9 +1,17 @@
 import { useState } from "react";
 import { MapPinIcon, ShoppingCart, User, Menu } from "lucide-react";
+import { useNavigate } from "react-router";
 
 const Header = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("Now Playing");
-  const tabs = [{ text: "Now Playing", link: "#" }, { text: "Coming Soon", link: "#" }, { text: "Cinemas", link: "#" }];
+  const tabs = [{ text: "Now Playing", link: "/" }, { text: "Coming Soon", link: "/coming-soon" }, { text: "Cinemas", link: "/cinemas" }];
+
+  const handleNavigate = (text: string, link: string) => {
+    setActiveTab(text);
+    navigate(link);
+  }
+
   return (
     <header className="w-full px-4 md:px-8 h-18 flex items-center justify-between">
       <div className="flex-shrink-0 w-32">
@@ -13,7 +21,7 @@ const Header = () => {
         {tabs.map((tab) => (
           <button
             key={tab.text}
-            onClick={() => setActiveTab(tab.text)}
+            onClick={() => handleNavigate(tab.text, tab.link)}
             className={`relative px-5 py-1.5 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${activeTab === tab.text
               ? "text-white border border-white/20 bg-white/5"
               : "text-gray-400 hover:text-white border border-transparent"
@@ -33,9 +41,9 @@ const Header = () => {
         <button className="hover:text-white transition-colors duration-300 cursor-pointer" aria-label="Profile">
           <User />
         </button>
-        <button className="hover:text-white transition-colors duration-300 cursor-pointer ml-1" aria-label="Menu">
+        {/* <button className="hover:text-white transition-colors duration-300 cursor-pointer ml-1" aria-label="Menu">
           <Menu />
-        </button>
+        </button> */}
       </div>
     </header>
   );

@@ -4,11 +4,11 @@ import { movieUserServices } from "../services/movieServices";
 import type { Movie } from "../types";
 import { TriangleAlert, Loader2 } from "lucide-react";
 
-const MoviesList = ({ type }: { type: "now-playing" | "upcoming" }) => {
-    const queryFn = type === "now-playing" ? movieUserServices.getNowPlayingMovies : movieUserServices.getUpcomingMovies;
+const MoviesList = ({ status = "now_showing" }: { status?: "now_showing" | "coming_soon" }) => {
+    const queryFn = status === "now_showing" ? movieUserServices.getNowPlayingMovies : movieUserServices.getUpcomingMovies;
 
     const { data: movies, isLoading, isError } = useQuery<Movie[]>({
-        queryKey: ["movies", type],
+        queryKey: ["movies", status],
         queryFn,
     });
 

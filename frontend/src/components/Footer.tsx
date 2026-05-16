@@ -1,11 +1,12 @@
-import React from 'react';
 import absoluteCinemaImg from '../assets/images/absolute_cinema (1).png';
 
-const Footer: React.FC = () => {
+const Footer = () => {
+  const tabs = [{ text: "Now Playing", link: "/" }, { text: "Coming Soon", link: "/coming-soon" }, { text: "Cinemas", link: "/cinemas" }];
+
   return (
     <footer className="border-t border-[#444748]/20 py-12 md:py-16 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-start gap-12 relative z-10">
-        
+
         {/* Brand & Copyright */}
         <div className="flex flex-col gap-4 max-w-sm">
           <h2 className="text-[#E5E2E1] font-['Montserrat'] font-bold text-2xl tracking-wide">
@@ -18,18 +19,14 @@ const Footer: React.FC = () => {
 
         {/* Links Columns */}
         <div className="flex flex-col sm:flex-row gap-12 md:gap-24 w-full md:w-auto justify-end">
-          
+
           {/* Column 1 */}
           <div className="flex flex-col gap-3">
-            <a href="#" className="text-[#9CA3AF] hover:text-[#E5E2E1] font-['Inter'] text-sm transition-colors">
-              Now Playing
-            </a>
-            <a href="#" className="text-[#9CA3AF] hover:text-[#E5E2E1] font-['Inter'] text-sm transition-colors">
-              Coming Soon
-            </a>
-            <a href="#" className="text-[#9CA3AF] hover:text-[#E5E2E1] font-['Inter'] text-sm transition-colors">
-              Cinemas
-            </a>
+            {tabs.map((tab) => (
+              <a href={tab.link} className="text-[#9CA3AF] hover:text-[#E5E2E1] font-['Inter'] text-sm transition-colors">
+                {tab.text}
+              </a>
+            ))}
           </div>
 
           {/* Column 2 */}
@@ -53,9 +50,9 @@ const Footer: React.FC = () => {
       </div>
 
       {/* Absolute Cinema Image */}
-      <img 
+      <img
         src={absoluteCinemaImg}
-        alt="Absolute Cinema" 
+        alt="Absolute Cinema"
         className="absolute bottom-0 right-0 w-40 md:w-40 opacity-20 pointer-events-none"
       />
     </footer>
