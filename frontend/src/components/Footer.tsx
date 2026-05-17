@@ -23,7 +23,7 @@ const Footer = () => {
           {/* Column 1 */}
           <div className="flex flex-col gap-3">
             {tabs.map((tab) => (
-              <a href={tab.link} className="text-[#9CA3AF] hover:text-[#E5E2E1] font-['Inter'] text-sm transition-colors">
+              <a key={tab.link} href={tab.link} className="text-[#9CA3AF] hover:text-[#E5E2E1] font-['Inter'] text-sm transition-colors">
                 {tab.text}
               </a>
             ))}

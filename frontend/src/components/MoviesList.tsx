@@ -31,7 +31,7 @@ const MoviesList = ({ status = "now_showing" }: { status?: "now_showing" | "comi
                         <MovieCard
                             key={movie.id}
                             title={movie.title}
-                            genre={movie.genres[0]}
+                            genre={movie.genres[0]?.name || "Unknown"}
                             duration={movie.duration_minutes}
                             imageUrl={movie.poster_url}
                         />
