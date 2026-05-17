@@ -1,3 +1,5 @@
+import { formatDuration } from "../utils";
+
 interface MovieCardProps {
     title: string;
     genre: string;
@@ -22,7 +24,7 @@ const MovieCard = ({ title, genre, duration, imageUrl }: MovieCardProps) => {
                 <div className="flex items-center gap-2 text-[15px] text-gray-400 font-['Inter']">
                     <span>{genre}</span>
                     <span className="text-[10px] text-gray-500">•</span>
-                    <span>{duration}</span>
+                    <span>{formatDuration(duration)}</span>
                 </div>
             </div>
         </div>
