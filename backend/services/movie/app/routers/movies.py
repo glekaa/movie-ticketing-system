@@ -9,6 +9,7 @@ from app.database import get_db
 from app.models.genre import Genre
 from app.models.movie import Movie
 from app.schemas.movie import MovieCreate, MovieResponse, MovieUpdate
+from app.services.omdb import extract_omdb_fields, fetch_movie_details
 
 router = APIRouter(
     prefix="/movies",
@@ -44,7 +45,16 @@ async def get_movie(movie_id: UUID, db: AsyncSession = Depends(get_db)):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Movie not found"
         )
-    return movie
+
+    # Enrich with OMDB data
+    response = MovieResponse.model_validate(movie)
+    omdb_data = await fetch_movie_details(movie.title)
+    if omdb_data:
+        omdb_fields = extract_omdb_fields(omdb_data)
+        for key, value in omdb_fields.items():
+            setattr(response, key, value)
+
+    return response
 
 
 @router.post("/", response_model=MovieResponse, status_code=status.HTTP_201_CREATED)

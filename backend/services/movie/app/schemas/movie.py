@@ -40,4 +40,14 @@ class MovieResponse(MovieBase):
     updated_at: datetime
     genres: list[GenreResponse] = []
 
+    # Enriched from OMDB (optional — populated when OMDB data is available)
+    director: str | None = None
+    actors: str | None = None
+    imdb_rating: str | None = None
+    plot: str | None = None
+    country: str | None = None
+    language: str | None = None
+    awards: str | None = None
+
     model_config = ConfigDict(from_attributes=True)
+
