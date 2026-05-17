@@ -6,11 +6,11 @@ const movieUserServices = {
         return response.data;
     },
     async getNowPlayingMovies() {
-        const response = await apiMovies.get("/?status=now-playing");
+        const response = await apiMovies.get("/?status=now_playing");
         return response.data;
     },
     async getUpcomingMovies() {
-        const response = await apiMovies.get("/?status=upcoming");
+        const response = await apiMovies.get("/?status=coming_soon");
         return response.data;
     },
     async getMovieById(id: string) {
