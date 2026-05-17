@@ -1,14 +1,45 @@
+type Genre = {
+    id: string;
+    name: string;
+    slug: string;
+};
+
 type Movie = {
     id: string;
     title: string;
     description: string;
     poster_url: string;
+    backdrop_url: string;
+    age_rating: string;
     duration_minutes: number;
     release_date: string;
     status: string;
     created_at: string;
     updated_at: string;
-    genres: string[];
+    genres: Genre[];
 };
 
-export type { Movie };
+export type Showtime = {
+    id: string;
+    start_time: string;
+    end_time: string;
+    base_price: string;
+    status: string;
+    screen_id: string;
+};
+
+export type Screen = {
+    id: string;
+    name: string;
+    capacity: number;
+    theater_id: string;
+};
+
+export type Theater = {
+    id: string;
+    name: string;
+    location: string;
+    screens: Screen[];
+};
+
+export type { Movie, Genre };

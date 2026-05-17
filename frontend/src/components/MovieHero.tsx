@@ -1,17 +1,28 @@
 import Tag from "./Tag";
-import TheMatrixImage from "../../../assets/images/the-matrix.png"
-import TheMatrixPoster from "../../../assets/images/the-matrix-poster.png"
 import { Play, Star } from "lucide-react";
 import Button from "./Button";
+import type { Movie } from "../types";
 
-const MovieHero = () => {
-    const mockTags = [{ type: "primary", text: "Sci-Fi / Thriller" }, { type: "primary", text: "142 min" }, { type: "secondary", text: "16+" }]
+interface MovieHeroProps {
+    movie: Movie;
+}
+
+const MovieHero = ({ movie }: MovieHeroProps) => {
+    const genreTags = movie.genres?.length 
+        ? movie.genres.map(g => ({ type: "primary", text: g.name }))
+        : [{ type: "primary", text: "Uncategorized" }];
+
+    const tags = [
+        ...genreTags,
+        { type: "primary", text: `${movie.duration_minutes} min` },
+        { type: "secondary", text: `${movie.age_rating}+` }
+    ];
 
     return (
         <div className="relative w-full h-[80vh] overflow-hidden px-6 md:px-10 pb-20 pt-32">
             <div className="absolute inset-0"
                 style={{
-                    backgroundImage: `url(${TheMatrixImage})`,
+                    backgroundImage: `url(${movie.backdrop_url})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                 }}
@@ -26,19 +37,19 @@ const MovieHero = () => {
             <div className="h-full max-w-7xl mx-auto relative flex flex-row items-end gap-10">
                 {/* Poster */}
                 <div className="w-40 md:w-56 shrink-0 hidden sm:block shadow-[0_0_40px_rgba(0,0,0,0.8)] rounded-2xl border border-white/10 overflow-hidden">
-                    <img src={TheMatrixPoster} alt="Movie Poster" className="w-full h-auto block" />
+                    <img src={movie.poster_url} alt={`${movie.title} Poster`} className="w-full h-auto block" />
                 </div>
                 
                 {/* Info */}
                 <div className="flex flex-col gap-4 pb-4">
                     <div className="flex flex-row gap-2">
-                        {mockTags.map((tag, index) => (
+                        {tags.map((tag, index) => (
                             <Tag key={index} variant={tag.type as "primary" | "secondary"}>{tag.text}</Tag>
                         ))}
                     </div>
 
-                    <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white tracking-wider">
-                        THE MATRIX
+                    <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white tracking-wider uppercase">
+                        {movie.title}
                     </h1>
                     
                     <div className="flex flex-row items-center gap-6 mt-2">

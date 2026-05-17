@@ -17,6 +17,10 @@ const movieUserServices = {
         const response = await apiMovies.get(`/${id}`);
         return response.data;
     },
+    async getMovieShowtimes(id: string) {
+        const response = await apiMovies.get(`/${id}/showtimes`);
+        return response.data;
+    },
 };
 
 const movieAdminServices = {
