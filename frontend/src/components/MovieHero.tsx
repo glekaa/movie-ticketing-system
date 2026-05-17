@@ -1,5 +1,6 @@
 import Tag from "./Tag";
-import { Play, Star } from "lucide-react";
+import { Play } from "lucide-react";
+import imdbLogo from "../assets/imdb.svg";
 import Button from "./Button";
 import type { Movie } from "../types";
 
@@ -53,10 +54,12 @@ const MovieHero = ({ movie }: MovieHeroProps) => {
                     </h1>
                     
                     <div className="flex flex-row items-center gap-6 mt-2">
-                        <div className="flex items-center gap-2 text-white font-semibold">
-                            <Star />
-                            <span className="text-xl">8.4 <span className="text-gray-400 text-sm">/ 10</span></span>
-                        </div>
+                        {movie.imdb_rating && movie.imdb_rating !== "N/A" && (
+                            <div className="flex items-center gap-2.5 text-white font-semibold">
+                                <img src={imdbLogo} alt="IMDb" className="h-6 pointer-events-none select-none" />
+                                <span className="text-xl">{movie.imdb_rating} <span className="text-gray-400 text-sm">/ 10</span></span>
+                            </div>
+                        )}
                         <Button icon={<Play />} className="py-3 text-sm" variant="secondary">Watch Trailer</Button>
                     </div>
                 </div>

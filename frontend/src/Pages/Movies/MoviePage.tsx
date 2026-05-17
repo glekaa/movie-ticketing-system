@@ -42,7 +42,7 @@ const MoviePage = () => {
                 {/* Left Column: Synopsis & Cast */}
                 <div className="lg:col-span-2 flex flex-col gap-12">
                     <Synopsis movie={movie} />
-                    <Cast />
+                    <Cast movie={movie} />
                 </div>
 
                 {/* Right Column: Showtime Selector */}

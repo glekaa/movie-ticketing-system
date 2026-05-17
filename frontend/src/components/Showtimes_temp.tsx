@@ -111,7 +111,7 @@ const Showtimes = () => {
                         <button 
                             key={tab.value}
                             onClick={() => setSelectedDate(tab.value)}
-                            className={`flex flex-col items-center justify-center px-4 py-2 rounded-full min-w-[70px] transition-all ${
+                            className={`flex flex-col items-center justify-center px-4 py-2 rounded-full min-w-[70px] transition-all cursor-pointer ${
                                 selectedDate === tab.value 
                                 ? "bg-[#00A3FF] text-white shadow-[0_4px_15px_-4px_rgba(0,163,255,0.5)]" 
                                 : "bg-white/5 border border-white/10 text-[#C4C7C7] hover:bg-white/10 hover:text-white"
@@ -141,7 +141,7 @@ const Showtimes = () => {
                                         <button 
                                             key={st.id}
                                             disabled={!isAvailable}
-                                            className={`px-4 py-1.5 rounded-full text-xs transition-colors ${
+                                            className={`px-4 py-1.5 rounded-full text-xs transition-colors cursor-pointer ${
                                                 isAvailable 
                                                 ? "bg-[#0a0807] border border-white/10 text-[#C4C7C7] hover:border-white/30 hover:text-white"
                                                 : "bg-[#0a0807] border border-white/5 text-[#8B8D8D] opacity-50 cursor-not-allowed line-through"

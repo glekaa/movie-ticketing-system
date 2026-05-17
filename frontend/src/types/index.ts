@@ -17,6 +17,13 @@ type Movie = {
     created_at: string;
     updated_at: string;
     genres: Genre[];
+    director: string | null;
+    actors: string | null;
+    imdb_rating: string | null;
+    plot: string | null;
+    country: string | null;
+    language: string | null;
+    awards: string | null;
 };
 
 export type Showtime = {
