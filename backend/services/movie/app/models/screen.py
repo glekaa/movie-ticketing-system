@@ -22,4 +22,4 @@ class Screen(Base):
     seats_per_row: Mapped[int] = mapped_column(Integer, nullable=False)
 
     theater: Mapped["Theater"] = relationship(back_populates="screens")
-    screens: Mapped[list["Screen"]] = relationship(back_populates="screen")
+    seats: Mapped[list["Seat"]] = relationship(back_populates="screen")

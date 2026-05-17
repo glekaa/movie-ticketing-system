@@ -11,7 +11,9 @@ class MovieBase(BaseModel):
     title: str
     description: str | None = None
     poster_url: str | None = None
+    backdrop_url: str | None = None
     duration_minutes: int
+    age_rating: int = 0
     release_date: date
     status: MovieStatus = MovieStatus.coming_soon
 
@@ -24,7 +26,9 @@ class MovieUpdate(BaseModel):
     title: str | None = None
     description: str | None = None
     poster_url: str | None = None
+    backdrop_url: str | None = None
     duration_minutes: int | None = None
+    age_rating: int | None = None
     release_date: date | None = None
     status: MovieStatus | None = None
     genre_ids: list[UUID] | None = None
