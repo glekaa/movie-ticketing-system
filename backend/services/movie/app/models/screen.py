@@ -13,11 +13,13 @@ class Screen(Base):
     id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
     )
+    theater_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("theaters.id", ondelete="CASCADE"), nullable=False
+    )
+
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     total_rows: Mapped[int] = mapped_column(Integer, nullable=False)
     seats_per_row: Mapped[int] = mapped_column(Integer, nullable=False)
 
-    theater_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey("theaters.id", ondelete="CASCADE"), nullable=False
-    )
     theater: Mapped["Theater"] = relationship(back_populates="screens")
+    screens: Mapped[list["Screen"]] = relationship(back_populates="screen")
