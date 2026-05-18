@@ -6,28 +6,34 @@ interface CastProps {
 }
 
 const Cast = ({ movie }: CastProps) => {
-    // Parse comma-separated actors string from OMDB API
-    const actorNames = movie.actors
-        ? movie.actors.split(",").map(name => name.trim()).filter(Boolean)
-        : [];
+    const actors = movie.actors || [];
 
-    if (actorNames.length === 0) {
+    if (actors.length === 0) {
         return null;
     }
 
     return (
         <section>
             <h2 className="text-2xl font-bold mb-6">Top Cast</h2>
-            <div className="flex flex-row flex-wrap gap-3">
-                {actorNames.map((name) => (
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-4">
+                {actors.map((actor, index) => (
                     <div
-                        key={name}
-                        className="flex items-center gap-3 bg-[#141313] rounded-lg px-4 py-3 border border-white/5"
+                        key={index}
+                        className="flex flex-col bg-[#141313] rounded-xl overflow-hidden border border-white/5"
                     >
-                        <div className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                            <User className="w-4 h-4 text-[#8B8D8D]" />
+                        <div className="aspect-[4/5] w-full bg-[#1a1a1a] relative">
+                            {actor.profile_url ? (
+                                <img src={actor.profile_url} alt={actor.name} className="w-full h-full object-cover" />
+                            ) : (
+                                <div className="w-full h-full flex items-center justify-center">
+                                    <User className="w-10 h-10 text-[#8B8D8D]" />
+                                </div>
+                            )}
                         </div>
-                        <span className="font-medium text-sm text-[#E5E2E1]">{name}</span>
+                        <div className="p-4 flex flex-col">
+                            <span className="font-bold text-[#E5E2E1] truncate">{actor.name}</span>
+                            {actor.character && <span className="text-xs text-[#8B8D8D] mt-0.5 truncate">as {actor.character}</span>}
+                        </div>
                     </div>
                 ))}
             </div>

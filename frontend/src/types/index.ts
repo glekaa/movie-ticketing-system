@@ -4,6 +4,13 @@ type Genre = {
     slug: string;
 };
 
+type Person = {
+    name: string;
+    profile_url: string | null;
+    character: string | null;
+    job: string | null;
+};
+
 type Movie = {
     id: string;
     title: string;
@@ -17,13 +24,11 @@ type Movie = {
     created_at: string;
     updated_at: string;
     genres: Genre[];
-    director: string | null;
-    actors: string | null;
-    imdb_rating: string | null;
+    director: Person | null;
+    actors: Person[] | null;
+    tmdb_rating: number | null;
     plot: string | null;
-    country: string | null;
     language: string | null;
-    awards: string | null;
 };
 
 export type Showtime = {
@@ -49,4 +54,4 @@ export type Theater = {
     screens: Screen[];
 };
 
-export type { Movie, Genre };
+export type { Movie, Genre, Person };

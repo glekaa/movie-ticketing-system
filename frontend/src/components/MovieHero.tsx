@@ -54,10 +54,10 @@ const MovieHero = ({ movie }: MovieHeroProps) => {
                     </h1>
                     
                     <div className="flex flex-row items-center gap-6 mt-2">
-                        {movie.imdb_rating && movie.imdb_rating !== "N/A" && (
+                        {movie.tmdb_rating && (
                             <div className="flex items-center gap-2.5 text-white font-semibold">
-                                <img src={imdbLogo} alt="IMDb" className="h-6 pointer-events-none select-none" />
-                                <span className="text-xl">{movie.imdb_rating} <span className="text-gray-400 text-sm">/ 10</span></span>
+                                <span className="px-1.5 py-0.5 rounded bg-gradient-to-r from-teal-400 to-blue-500 text-xs font-bold text-white uppercase tracking-wider">TMDB</span>
+                                <span className="text-xl">{movie.tmdb_rating} <span className="text-gray-400 text-sm">/ 10</span></span>
                             </div>
                         )}
                         <Button icon={<Play />} className="py-3 text-sm" variant="secondary">Watch Trailer</Button>

@@ -1,5 +1,5 @@
 import type { Movie } from "../types";
-import { Clapperboard, Globe, Languages, Trophy } from "lucide-react";
+import { Clapperboard, Languages } from "lucide-react";
 
 interface SynopsisProps {
     movie: Movie;
@@ -10,8 +10,7 @@ const Synopsis = ({ movie }: SynopsisProps) => {
     const synopsisText = movie.plot || movie.description;
 
     const metaItems = [
-        { label: "Director", value: movie.director, icon: <Clapperboard className="w-3.5 h-3.5" /> },
-        { label: "Country", value: movie.country, icon: <Globe className="w-3.5 h-3.5" /> },
+        { label: "Director", value: movie.director?.name, icon: <Clapperboard className="w-3.5 h-3.5" /> },
         { label: "Language", value: movie.language, icon: <Languages className="w-3.5 h-3.5" /> },
     ].filter(item => item.value);
 
@@ -34,12 +33,6 @@ const Synopsis = ({ movie }: SynopsisProps) => {
                     ))}
                 </div>
 
-                {movie.awards && movie.awards !== "N/A" && (
-                    <div className="mt-4 flex items-center gap-2.5 bg-gradient-to-r from-yellow-500/10 to-transparent rounded-lg px-4 py-3 border border-yellow-500/10">
-                        <Trophy className="w-4 h-4 text-yellow-500 shrink-0" />
-                        <p className="text-sm text-[#C4C7C7]">{movie.awards}</p>
-                    </div>
-                )}
             </div>
         </section>
     );

@@ -829,18 +829,20 @@
           "director": {
             "anyOf": [
               {
-                "type": "string"
+                "$ref": "#/components/schemas/Person"
               },
               {
                 "type": "null"
               }
-            ],
-            "title": "Director"
+            ]
           },
           "actors": {
             "anyOf": [
               {
-                "type": "string"
+                "items": {
+                  "$ref": "#/components/schemas/Person"
+                },
+                "type": "array"
               },
               {
                 "type": "null"
@@ -848,16 +850,16 @@
             ],
             "title": "Actors"
           },
-          "imdb_rating": {
+          "tmdb_rating": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "number"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Imdb Rating"
+            "title": "Tmdb Rating"
           },
           "plot": {
             "anyOf": [
@@ -870,17 +872,6 @@
             ],
             "title": "Plot"
           },
-          "country": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Country"
-          },
           "language": {
             "anyOf": [
               {
@@ -891,17 +882,6 @@
               }
             ],
             "title": "Language"
-          },
-          "awards": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Awards"
           }
         },
         "type": "object",
@@ -1032,6 +1012,52 @@
         },
         "type": "object",
         "title": "MovieUpdate"
+      },
+      "Person": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "profile_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Url"
+          },
+          "character": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Character"
+          },
+          "job": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Job"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "Person"
       },
       "ScreenBase": {
         "properties": {
