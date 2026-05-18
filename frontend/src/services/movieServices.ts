@@ -1,49 +1,40 @@
-import apiMovies from "./api";
+import api from "./api";
 
-const movieUserServices = {
+const movieServices = {
     async getAllMovies() {
-        const response = await apiMovies.get("/");
+        const response = await api.get("/movies/");
         return response.data;
     },
     async getNowPlayingMovies() {
-        const response = await apiMovies.get("/?status=now_playing");
+        const response = await api.get("/movies/?status=now_playing");
         return response.data;
     },
     async getUpcomingMovies() {
-        const response = await apiMovies.get("/?status=coming_soon");
+        const response = await api.get("/movies/?status=coming_soon");
         return response.data;
     },
     async getMovieById(id: string) {
-        const response = await apiMovies.get(`/${id}`);
+        const response = await api.get(`/movies/${id}`);
         return response.data;
     },
     async getMovieShowtimes(id: string) {
-        const response = await apiMovies.get(`/${id}/showtimes`);
+        const response = await api.get(`/movies/${id}/showtimes`);
         return response.data;
     },
-};
 
-const movieAdminServices = {
-    async getAllMovies() {
-        const response = await apiMovies.get("/");
-        return response.data;
-    },
-    async getMovieById(id: string) {
-        const response = await apiMovies.get(`/${id}`);
-        return response.data;
-    },
+    // Admin-only methods
     async createMovie(movie: any) {
-        const response = await apiMovies.post("/", movie);
+        const response = await api.post("/movies/", movie);
         return response.data;
     },
     async updateMovie(id: string, movie: any) {
-        const response = await apiMovies.put(`/${id}`, movie);
+        const response = await api.put(`/movies/${id}`, movie);
         return response.data;
     },
     async deleteMovie(id: string) {
-        const response = await apiMovies.delete(`/${id}`);
+        const response = await api.delete(`/movies/${id}`);
         return response.data;
     },
 };
 
-export { movieUserServices, movieAdminServices };
+export default movieServices;

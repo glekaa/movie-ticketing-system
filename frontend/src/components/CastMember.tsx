@@ -1,12 +1,10 @@
-import React from 'react';
-
 interface CastMemberProps {
     imageUrl: string;
     name: string;
     role: string;
 }
 
-const CastMember: React.FC<CastMemberProps> = ({ imageUrl, name, role }) => {
+const CastMember = ({ imageUrl, name, role }: CastMemberProps) => {
     return (
         <div className="relative group overflow-hidden rounded-xl bg-[#1a1a1a] aspect-[2/3]">
             <img src={imageUrl} alt={name} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />

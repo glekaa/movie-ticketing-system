@@ -1,11 +1,14 @@
 import Button from "./Button";
 import Tag from "./Tag";
-import { Play, Ticket, TriangleAlert, Loader2 } from "lucide-react";
+import HeroOverlay from "./HeroOverlay";
+import LoadingState from "./LoadingState";
+import ErrorState from "./ErrorState";
+import { Play, Ticket } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { movieUserServices } from "../services/movieServices";
+import movieServices from "../services/movieServices";
 import type { Movie } from "../types";
 import { useState, useEffect, useCallback } from "react";
-import { formatDuration } from "../utils";
+import { buildMovieTags } from "../utils";
 
 const SCROLL_INTERVAL_MS = 6000;
 
@@ -16,7 +19,7 @@ const Hero = () => {
     isError,
   } = useQuery<Movie[]>({
     queryKey: ["movies", "now_playing"],
-    queryFn: () => movieUserServices.getNowPlayingMovies(),
+    queryFn: () => movieServices.getNowPlayingMovies(),
   });
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -47,10 +50,7 @@ const Hero = () => {
   if (isLoading) {
     return (
       <div className="relative w-full h-[70vh] flex items-center justify-center bg-[#141313]">
-        <div className="flex items-center justify-center gap-4">
-          <Loader2 className="w-12 h-12 text-gray-500 animate-spin" />
-          <p className="text-2xl text-gray-500">Loading movies</p>
-        </div>
+        <LoadingState message="Loading movies" />
       </div>
     );
   }
@@ -58,10 +58,7 @@ const Hero = () => {
   if (isError) {
     return (
       <div className="relative w-full h-[70vh] flex items-center justify-center bg-[#141313]">
-        <div className="flex items-center justify-center gap-4">
-          <TriangleAlert className="w-12 h-12 text-red-500" />
-          <p className="text-2xl text-red-500">Error loading movies</p>
-        </div>
+        <ErrorState message="Error loading movies" />
       </div>
     );
   }
@@ -75,19 +72,7 @@ const Hero = () => {
   }
 
   const currentMovie = movies[activeIndex];
-
-  const genreTags = currentMovie.genres.map((g) => ({
-    type: "primary" as const,
-    text: g.name,
-  }));
-  const durationTag = {
-    type: "primary" as const,
-    text: formatDuration(currentMovie.duration_minutes),
-  };
-  const ageRatingTag = currentMovie.age_rating
-    ? [{ type: "secondary" as const, text: `${currentMovie.age_rating}+` }]
-    : [];
-  const allTags = [...genreTags, durationTag, ...ageRatingTag];
+  const allTags = buildMovieTags(currentMovie);
 
   return (
     <div className="relative w-full h-[70vh] overflow-hidden px-10 pb-20">
@@ -104,11 +89,7 @@ const Hero = () => {
         />
       ))}
 
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(20,19,19,0.35)_0%,_rgba(20,19,19,0.75)_50%,_rgba(20,19,19,1)_100%)] pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#141313] via-[#141313]/20 to-transparent pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#141313] via-[#141313]/20 to-transparent pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#141313] via-[#141313]/20 to-transparent pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-l from-[#141313] via-[#141313]/20 to-transparent pointer-events-none" />
+      <HeroOverlay variant="strong" />
 
       <div
         className={`h-full relative flex flex-col gap-8 justify-end items-start transition-opacity duration-400 ease-in-out ${isFading ? "opacity-0" : "opacity-100"}`}

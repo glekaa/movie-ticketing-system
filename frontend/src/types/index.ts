@@ -1,10 +1,10 @@
-type Genre = {
+export type Genre = {
     id: string;
     name: string;
     slug: string;
 };
 
-type Movie = {
+export type Movie = {
     id: string;
     title: string;
     description: string;
@@ -41,5 +41,3 @@ export type Theater = {
     location: string;
     screens: Screen[];
 };
-
-export type { Movie, Genre };

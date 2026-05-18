@@ -1,7 +1,7 @@
-import React from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 
-interface TagProps extends React.HTMLAttributes<HTMLSpanElement> {
-  children: React.ReactNode;
+interface TagProps extends HTMLAttributes<HTMLSpanElement> {
+  children: ReactNode;
   variant?: "primary" | "secondary";
 }
 

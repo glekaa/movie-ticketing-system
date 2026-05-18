@@ -1,7 +1,7 @@
 import { lazy, Suspense } from "react";
 import Layout from "./Layout/Layout";
 import { Routes, Route } from "react-router";
-import { Loader2 } from "lucide-react";
+import LoadingState from "./components/LoadingState";
 
 const Movies = lazy(() => import("./Pages/Movies/Movies"));
 const MoviePage = lazy(() => import("./Pages/Movies/MoviePage"));
@@ -12,8 +12,8 @@ const App = () => {
     <Layout>
       <Suspense
         fallback={
-          <div className="flex items-center justify-center gap-4 h-screen">
-            <Loader2 className="w-12 h-12 text-gray-500 animate-spin" />
+          <div className="flex items-center justify-center h-screen">
+            <LoadingState />
           </div>
         }
       >

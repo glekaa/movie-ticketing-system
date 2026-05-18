@@ -1,19 +1,22 @@
 import { useState, useMemo, useEffect } from "react";
 import Button from "./Button";
-import { MapPin, Loader2, TriangleAlert } from "lucide-react";
+import LoadingState from "./LoadingState";
+import ErrorState from "./ErrorState";
+import { MapPin } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { movieUserServices } from "../services/movieServices";
-import { theaterServices } from "../services/theaterServices";
+import movieServices from "../services/movieServices";
+import theaterServices from "../services/theaterServices";
 import type { Showtime, Theater } from "../types";
-import { useParams } from "react-router";
 
-const Showtimes = () => {
-    const { id } = useParams<{ id: string }>();
+interface ShowtimesProps {
+    movieId: string;
+}
 
+const Showtimes = ({ movieId }: ShowtimesProps) => {
     const { data: showtimes, isLoading: isLoadingShowtimes, isError: isErrorShowtimes } = useQuery<Showtime[]>({
-        queryKey: ["showtimes", id],
-        queryFn: () => movieUserServices.getMovieShowtimes(id!),
-        enabled: !!id,
+        queryKey: ["showtimes", movieId],
+        queryFn: () => movieServices.getMovieShowtimes(movieId),
+        enabled: !!movieId,
     });
 
     const { data: theaters, isLoading: isLoadingTheaters } = useQuery<Theater[]>({
@@ -81,16 +84,15 @@ const Showtimes = () => {
     if (isLoadingShowtimes || isLoadingTheaters) {
         return (
             <div className="bg-[#141313] rounded-2xl p-6 border border-white/5 sticky top-24 flex items-center justify-center h-64">
-                <Loader2 className="w-8 h-8 text-gray-500 animate-spin" />
+                <LoadingState />
             </div>
         );
     }
 
     if (isErrorShowtimes) {
         return (
-            <div className="bg-[#141313] rounded-2xl p-6 border border-white/5 sticky top-24 flex items-center justify-center gap-2 h-64">
-                <TriangleAlert className="w-8 h-8 text-red-500" />
-                <span className="text-red-500 font-semibold">Error loading showtimes</span>
+            <div className="bg-[#141313] rounded-2xl p-6 border border-white/5 sticky top-24 flex items-center justify-center h-64">
+                <ErrorState message="Error loading showtimes" />
             </div>
         );
     }

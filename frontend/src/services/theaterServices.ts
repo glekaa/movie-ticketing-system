@@ -1,10 +1,10 @@
-import { apiTheaters } from "./api";
+import api from "./api";
 
 const theaterServices = {
     async getAllTheaters() {
-        const response = await apiTheaters.get("/");
+        const response = await api.get("/theaters/");
         return response.data;
     },
 };
 
-export { theaterServices };
+export default theaterServices;
