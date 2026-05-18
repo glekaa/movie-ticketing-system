@@ -21,6 +21,10 @@ const movieServices = {
         const response = await api.get(`/movies/${id}/showtimes`);
         return response.data;
     },
+    async getMovieByGenres(genres: string[]) {
+        const response = await api.get(`/movies/?genres=${genres.join(",")}`);
+        return response.data;
+    },
 
     // Admin-only methods
     async createMovie(movie: any) {

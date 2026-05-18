@@ -4,7 +4,7 @@ import MoviesList from "../../components/MoviesList";
 const Movies = ({ status = "now_showing" }: { status?: "now_showing" | "coming_soon" }) => {
     return (
         <>
-            <Hero />
+            <Hero status={status} />
             <MoviesList status={status} />
         </>
     )

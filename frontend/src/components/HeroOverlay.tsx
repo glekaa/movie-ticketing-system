@@ -5,7 +5,7 @@ interface HeroOverlayProps {
 
 const HeroOverlay = ({ variant = "strong" }: HeroOverlayProps) => {
     const radial = variant === "strong"
-        ? "bg-[radial-gradient(ellipse_at_center,_rgba(20,19,19,0.35)_0%,_rgba(20,19,19,0.75)_50%,_rgba(20,19,19,1)_100%)]"
+        ? "bg-[radial-gradient(ellipse_at_center,_rgba(20,19,19,0.2)_0%,_rgba(20,19,19,0.3)_50%,_rgba(20,19,19,0.6)_100%)]"
         : "bg-[radial-gradient(ellipse_at_center,_rgba(20,19,19,0)_0%,_rgba(20,19,19,0.2)_60%,_rgba(20,19,19,1)_100%)]";
 
     return (

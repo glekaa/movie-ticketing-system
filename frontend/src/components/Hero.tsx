@@ -12,14 +12,20 @@ import { buildMovieTags } from "../utils";
 
 const SCROLL_INTERVAL_MS = 6000;
 
-const Hero = () => {
+interface HeroProps {
+  status: "now_showing" | "coming_soon";
+}
+
+const Hero = ({ status }: HeroProps) => {
+  const queryFn = status === "now_showing" ? movieServices.getNowPlayingMovies : movieServices.getUpcomingMovies;
+
   const {
     data: movies,
     isLoading,
     isError,
   } = useQuery<Movie[]>({
-    queryKey: ["movies", "now_playing"],
-    queryFn: () => movieServices.getNowPlayingMovies(),
+    queryKey: ["movies", status],
+    queryFn,
   });
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -130,11 +136,10 @@ const Hero = () => {
                 <button
                   key={idx}
                   onClick={() => goToSlide(idx)}
-                  className={`rounded-full transition-all duration-300 cursor-pointer ${
-                    idx === activeIndex
+                  className={`rounded-full transition-all duration-300 cursor-pointer ${idx === activeIndex
                       ? "w-8 h-2 bg-[#00A3FF]"
                       : "w-2 h-2 bg-white/30 hover:bg-white/60"
-                  }`}
+                    }`}
                   aria-label={`Go to slide ${idx + 1}`}
                 />
               ))}
