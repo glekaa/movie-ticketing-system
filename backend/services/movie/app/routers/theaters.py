@@ -1,6 +1,6 @@
 import uuid
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
@@ -9,7 +9,7 @@ from app.database import get_db
 from app.models.screen import Screen
 from app.models.theater import Theater
 from app.schemas.screen import ScreenBase, ScreenResponse
-from app.schemas.theater import TheaterCreate, TheaterResponse
+from app.schemas.theater import TheaterCreate, TheaterResponse, TheaterUpdate
 
 router = APIRouter(
     prefix="/theaters",
@@ -29,7 +29,39 @@ async def create_theater(theater_in: TheaterCreate, db: AsyncSession = Depends(g
     new_theater = Theater(**theater_in.model_dump())
     db.add(new_theater)
     await db.commit()
-    return new_theater
+    
+    result = await db.execute(
+        select(Theater).options(selectinload(Theater.screens)).where(Theater.id == new_theater.id)
+    )
+    return result.scalars().first()
+
+
+@router.put("/{theater_id}", response_model=TheaterResponse)
+async def update_theater(
+    theater_id: uuid.UUID, theater_in: TheaterUpdate, db: AsyncSession = Depends(get_db)
+):
+    result = await db.execute(
+        select(Theater)
+        .options(selectinload(Theater.screens))
+        .where(Theater.id == theater_id)
+    )
+    theater = result.scalars().first()
+
+    if not theater:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Theater not found"
+        )
+
+    update_data = theater_in.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(theater, field, value)
+
+    await db.commit()
+    
+    result = await db.execute(
+        select(Theater).options(selectinload(Theater.screens)).where(Theater.id == theater_id)
+    )
+    return result.scalars().first()
 
 
 @router.post("/{theater_id}/screens", response_model=ScreenResponse)

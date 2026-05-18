@@ -34,10 +34,24 @@ class MovieUpdate(BaseModel):
     genre_ids: list[UUID] | None = None
 
 
+class Person(BaseModel):
+    name: str
+    profile_url: str | None = None
+    character: str | None = None
+    job: str | None = None
+
 class MovieResponse(MovieBase):
     id: UUID
     created_at: datetime
     updated_at: datetime
     genres: list[GenreResponse] = []
 
+    # Enriched from TMDB (optional)
+    director: Person | None = None
+    actors: list[Person] | None = None
+    tmdb_rating: float | None = None
+    plot: str | None = None
+    language: str | None = None
+
     model_config = ConfigDict(from_attributes=True)
+

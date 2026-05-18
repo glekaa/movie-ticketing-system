@@ -23,3 +23,4 @@ class Screen(Base):
 
     theater: Mapped["Theater"] = relationship(back_populates="screens")
     seats: Mapped[list["Seat"]] = relationship(back_populates="screen")
+    showtimes: Mapped[list["Showtime"]] = relationship(back_populates="screen")

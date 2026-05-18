@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import genres, movies, theaters
+from app.routers import genres, movies, showtimes, theaters
 
 origins = [
     "http://localhost:5173",
@@ -21,6 +21,7 @@ app.add_middleware(
 app.include_router(movies.router, prefix="/api/v1")
 app.include_router(genres.router, prefix="/api/v1")
 app.include_router(theaters.router, prefix="/api/v1")
+app.include_router(showtimes.router, prefix="/api/v1")
 
 
 @app.get("/health")

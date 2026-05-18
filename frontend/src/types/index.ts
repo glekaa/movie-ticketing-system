@@ -4,6 +4,13 @@ export type Genre = {
     slug: string;
 };
 
+export type Person = {
+    name: string;
+    profile_url: string | null;
+    character: string | null;
+    job: string | null;
+};
+
 export type Movie = {
     id: string;
     title: string;
@@ -17,6 +24,11 @@ export type Movie = {
     created_at: string;
     updated_at: string;
     genres: Genre[];
+    director: Person | null;
+    actors: Person[] | null;
+    tmdb_rating: number | null;
+    plot: string | null;
+    language: string | null;
 };
 
 export type Showtime = {
