@@ -46,3 +46,4 @@ class Movie(Base):
     genres: Mapped[list["Genre"]] = relationship(
         "Genre", secondary="movie_genres", back_populates="movies"
     )
+    showtimes: Mapped[list["Showtime"]] = relationship(back_populates="movie")

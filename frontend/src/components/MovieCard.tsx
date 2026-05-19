@@ -1,30 +1,29 @@
 import { formatDuration } from "../utils";
+import type { Movie } from "../types";
 
 interface MovieCardProps {
-    title: string;
-    genre: string;
-    duration: number;
-    imageUrl: string;
+    movie: Movie;
+    onClick: () => void;
 }
 
-const MovieCard = ({ title, genre, duration, imageUrl }: MovieCardProps) => {
+const MovieCard = ({ movie, onClick }: MovieCardProps) => {
     return (
-        <div className="flex flex-col gap-3 group cursor-pointer w-full max-w-[300px]">
+        <div className="flex flex-col gap-3 group cursor-pointer w-full max-w-[300px]" onClick={onClick}>
             <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden ring-1 ring-white/10 shadow-lg">
                 <img
-                    src={imageUrl}
-                    alt={title}
+                    src={movie.poster_url}
+                    alt={movie.title}
                     className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/10" />
             </div>
 
             <div className="flex flex-col gap-1 px-1 mt-1">
-                <h3 className="text-xl font-medium text-[#E5E2E1] tracking-wide">{title}</h3>
+                <h3 className="text-xl font-medium text-[#E5E2E1] tracking-wide">{movie.title}</h3>
                 <div className="flex items-center gap-2 text-[15px] text-gray-400 font-['Inter']">
-                    <span>{genre}</span>
+                    <span>{movie.genres[0]?.name || "Unknown"}</span>
                     <span className="text-[10px] text-gray-500">•</span>
-                    <span>{formatDuration(duration)}</span>
+                    <span>{formatDuration(movie.duration_minutes)}</span>
                 </div>
             </div>
         </div>

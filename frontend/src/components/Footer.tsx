@@ -1,8 +1,8 @@
+import { Link } from "react-router";
+import { NAV_TABS } from "../constants/navigation";
 import absoluteCinemaImg from '../assets/images/absolute_cinema (1).png';
 
 const Footer = () => {
-  const tabs = [{ text: "Now Playing", link: "/" }, { text: "Coming Soon", link: "/coming-soon" }, { text: "Cinemas", link: "/cinemas" }];
-
   return (
     <footer className="border-t border-[#444748]/20 py-12 md:py-16 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-start gap-12 relative z-10">
@@ -22,10 +22,10 @@ const Footer = () => {
 
           {/* Column 1 */}
           <div className="flex flex-col gap-3">
-            {tabs.map((tab) => (
-              <a href={tab.link} className="text-[#9CA3AF] hover:text-[#E5E2E1] font-['Inter'] text-sm transition-colors">
+            {NAV_TABS.map((tab) => (
+              <Link key={tab.link} to={tab.link} className="text-[#9CA3AF] hover:text-[#E5E2E1] font-['Inter'] text-sm transition-colors">
                 {tab.text}
-              </a>
+              </Link>
             ))}
           </div>
 

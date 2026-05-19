@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const apiMovies = axios.create({
-    baseURL: "http://localhost:8002/api/v1/movies",
+const api = axios.create({
+    baseURL: "http://localhost:8002/api/v1",
     headers: {
         "Content-Type": "application/json",
     },
 });
 
-export default apiMovies;
+export default api;
