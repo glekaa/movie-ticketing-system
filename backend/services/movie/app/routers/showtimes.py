@@ -1,28 +1,23 @@
 from uuid import UUID
 
 from fastapi import APIRouter, Depends
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database import get_db
-from app.models import Showtime
 from app.schemas.showtime import ShowtimeCreate, ShowtimeResponse
+from app.services.showtime_service import ShowtimeService, get_showtime_service
 
 router = APIRouter(tags=["showtimes"])
 
 
 @router.post("/showtimes", response_model=ShowtimeResponse)
 async def create_showtime(
-    showtime_in: ShowtimeCreate, db: AsyncSession = Depends(get_db)
+    showtime_in: ShowtimeCreate,
+    showtime_service: ShowtimeService = Depends(get_showtime_service),
 ):
-    new_showtime = Showtime(**showtime_in.model_dump())
-    db.add(new_showtime)
-    await db.commit()
-    return new_showtime
+    return await showtime_service.create_showtime(showtime_in)
 
 
 @router.get("/movies/{movie_id}/showtimes", response_model=list[ShowtimeResponse])
-async def get_movie_showtimes(movie_id: UUID, db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(Showtime).where(Showtime.movie_id == movie_id))
-    showtimes = result.scalars().all()
-    return showtimes
+async def get_movie_showtimes(
+    movie_id: UUID, showtime_service: ShowtimeService = Depends(get_showtime_service)
+):
+    return await showtime_service.get_movie_showtimes(movie_id)

@@ -1,15 +1,10 @@
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
+from fastapi import APIRouter, Depends, Query, status
 
-from app.database import get_db
-from app.models.genre import Genre
-from app.models.movie import Movie
+from app.models.movie import MovieStatus
 from app.schemas.movie import MovieCreate, MovieResponse, MovieUpdate
-from app.services.tmdb import extract_tmdb_fields, fetch_movie_details
+from app.services.movie_service import MovieService, get_movie_service
 
 router = APIRouter(
     prefix="/movies",
@@ -22,98 +17,39 @@ async def get_movies(
     skip: int = 0,
     limit: int = 100,
     genres: list[str] = Query(default=None, description="Filter by genre slugs"),
-    db: AsyncSession = Depends(get_db),
+    status: MovieStatus | None = Query(default=None, description="Filter by movie status"),
+    movie_service: MovieService = Depends(get_movie_service),
 ):
-    query = select(Movie).options(selectinload(Movie.genres))
-
-    if genres:
-        query = query.join(Movie.genres).where(Genre.slug.in_(genres)).distinct()
-
-    query = query.offset(skip).limit(limit)
-    result = await db.execute(query)
-    movies = result.scalars().all()
-    return movies
+    return await movie_service.get_movies(
+        skip=skip, limit=limit, genres=genres, status=status
+    )
 
 
 @router.get("/{movie_id}", response_model=MovieResponse)
-async def get_movie(movie_id: UUID, db: AsyncSession = Depends(get_db)):
-    result = await db.execute(
-        select(Movie).options(selectinload(Movie.genres)).where(Movie.id == movie_id)
-    )
-    movie = result.scalars().first()
-    if not movie:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Movie not found"
-        )
-
-    # Enrich with TMDB data
-    response = MovieResponse.model_validate(movie)
-    tmdb_data = await fetch_movie_details(movie.title)
-    if tmdb_data:
-        tmdb_fields = extract_tmdb_fields(tmdb_data)
-        for key, value in tmdb_fields.items():
-            setattr(response, key, value)
-
-    return response
+async def get_movie(
+    movie_id: UUID, movie_service: MovieService = Depends(get_movie_service)
+):
+    return await movie_service.get_movie(movie_id)
 
 
 @router.post("/", response_model=MovieResponse, status_code=status.HTTP_201_CREATED)
-async def create_movie(movie_in: MovieCreate, db: AsyncSession = Depends(get_db)):
-    movie_data = movie_in.model_dump(exclude={"genre_ids"})
-    new_movie = Movie(**movie_data)
-
-    if movie_in.genre_ids:
-        genre_result = await db.execute(
-            select(Genre).where(Genre.id.in_(movie_in.genre_ids))
-        )
-        new_movie.genres = list(genre_result.scalars().all())
-
-    db.add(new_movie)
-    await db.commit()
-    return new_movie
+async def create_movie(
+    movie_in: MovieCreate, movie_service: MovieService = Depends(get_movie_service)
+):
+    return await movie_service.create_movie(movie_in)
 
 
 @router.put("/{movie_id}", response_model=MovieResponse)
 async def update_movie(
-    movie_id: UUID, movie_in: MovieUpdate, db: AsyncSession = Depends(get_db)
+    movie_id: UUID,
+    movie_in: MovieUpdate,
+    movie_service: MovieService = Depends(get_movie_service),
 ):
-    result = await db.execute(
-        select(Movie).options(selectinload(Movie.genres)).where(Movie.id == movie_id)
-    )
-    movie = result.scalars().first()
-
-    if not movie:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Movie not found"
-        )
-
-    update_data = movie_in.model_dump(exclude_unset=True, exclude={"genre_ids"})
-    for key, value in update_data.items():
-        setattr(movie, key, value)
-
-    if movie_in.genre_ids is not None:
-        if len(movie_in.genre_ids) == 0:
-            movie.genres = []
-        else:
-            genre_result = await db.execute(
-                select(Genre).where(Genre.id.in_(movie_in.genre_ids))
-            )
-            movie.genres = list(genre_result.scalars().all())
-
-    await db.commit()
-    await db.refresh(movie)
-    return movie
+    return await movie_service.update_movie(movie_id, movie_in)
 
 
 @router.delete("/{movie_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_movie(movie_id: UUID, db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(Movie).where(Movie.id == movie_id))
-    movie = result.scalars().first()
-
-    if not movie:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Movie not found"
-        )
-
-    await db.delete(movie)
-    await db.commit()
+async def delete_movie(
+    movie_id: UUID, movie_service: MovieService = Depends(get_movie_service)
+):
+    await movie_service.delete_movie(movie_id)
