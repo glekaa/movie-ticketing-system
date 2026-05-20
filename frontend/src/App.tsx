@@ -5,6 +5,7 @@ import LoadingState from "./components/LoadingState";
 
 const Movies = lazy(() => import("./Pages/Movies/Movies"));
 const MoviePage = lazy(() => import("./Pages/Movies/MoviePage"));
+const AllMovies = lazy(() => import("./Pages/AllMovies/AllMovies"));
 const NotFound = lazy(() => import("./Pages/NotFound/NotFound"));
 
 const App = () => {
@@ -28,6 +29,7 @@ const App = () => {
             path="/movie/:id"
             element={<MoviePage />}
           />
+          <Route path="/movies" element={<AllMovies />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

@@ -33,7 +33,7 @@ const MoviesList = ({ status }: MovieListProps) => {
                     {status === "now_showing" ? "Now Playing" : "Coming Soon"}
                 </h2>
                 <button
-                    onClick={() => navigate(`/`)}
+                    onClick={() => navigate(`/movies`)}
                     className="text-base md:text-lg lg:text-xl text-blue-400 cursor-pointer hover:text-white flex items-center gap-2">
                     <span>See All</span>
                     <ArrowRight className="w-4 h-4" />

@@ -31,3 +31,11 @@ export const FILTER_CATEGORY_OPTIONS = [
     { value: "new", label: "New" },
     { value: "kids", label: "Kids" },
 ] as const;
+
+export const FILTER_AGE_OPTIONS = [
+    { value: "G", label: "G - General Audiences" },
+    { value: "PG", label: "PG - Parental Guidance" },
+    { value: "PG-13", label: "PG-13 - Parents Strongly Cautioned" },
+    { value: "R", label: "R - Restricted" },
+    { value: "NC-17", label: "NC-17 - Adults Only" },
+] as const;
