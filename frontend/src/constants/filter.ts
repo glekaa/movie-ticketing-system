@@ -25,3 +25,9 @@ export const FILTER_GENRE_OPTIONS = [
     { value: "biography", label: "Biography" },
     { value: "documentary", label: "Documentary" },
 ] as const;
+
+export const FILTER_CATEGORY_OPTIONS = [
+    { value: "all", label: "All Categories" },
+    { value: "new", label: "New" },
+    { value: "kids", label: "Kids" },
+] as const;

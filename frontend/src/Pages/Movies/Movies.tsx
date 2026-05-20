@@ -1,11 +1,11 @@
 import Hero from "../../components/Hero";
-import MoviesList from "../../components/MoviesList";
+import MoviesListMain from "../../components/MoviesListMain";
 
 const Movies = ({ status = "now_showing" }: { status?: "now_showing" | "coming_soon" }) => {
     return (
         <>
             <Hero status={status} />
-            <MoviesList status={status} />
+            <MoviesListMain status={status} />
         </>
     )
 }

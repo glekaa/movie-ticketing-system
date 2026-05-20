@@ -6,7 +6,7 @@ const movieServices = {
         return response.data;
     },
     async getNowPlayingMovies() {
-        const response = await api.get("/movies/?status=now_playing");
+        const response = await api.get("/movies/?status=now_showing");
         return response.data;
     },
     async getUpcomingMovies() {

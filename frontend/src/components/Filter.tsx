@@ -1,42 +1,20 @@
-import { FILTER_DATE_OPTIONS } from "../constants/filter";
-import Button from "./Button";
-import { FilterIcon, Search } from "lucide-react";
+import { FILTER_CATEGORY_OPTIONS } from "../constants/filter";
+import { useState } from "react";
 
-interface FilterProps {
-    filtersActive: string;
-    setFiltersActive: (filtersActive: string) => void;
-    search: string;
-    setSearch: (search: string) => void;
-}
-
-const Filter = ({ filtersActive, setFiltersActive, search, setSearch }: FilterProps) => {
+const Filter = () => {
+    const [activeCategory, setActiveCategory] = useState("all");
 
     return (
-        <div className="flex justify-between">
-            {FILTER_DATE_OPTIONS.map((option) => (
-                <Button
+        <div className="flex flex-row gap-10">
+            {FILTER_CATEGORY_OPTIONS.map((option) => (
+                <button
                     key={option.value}
-                    variant={filtersActive === option.value ? "primary" : "secondary"}
-                    onClick={() => setFiltersActive(option.value)}>
+                    onClick={() => setActiveCategory(option.value)}
+                    className={`text-2xl font-extrabold cursor-pointer hover:text-white ${activeCategory === option.value ? "text-white" : "text-white/60 "}`}>
                     {option.label}
-                </Button>
+                </button>
             ))}
-            <div className="flex items-center border border-gray-300 rounded-lg px-3 py-2">
-                <Search className="text-gray-500 mr-2" />
-                <input
-                    type="text"
-                    placeholder="Search movies..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className="bg-transparent outline-none text-white w-full"
-                />
-            </div>
-            <Button
-                variant={"secondary"} >
-                <FilterIcon />
-                All Filters
-            </Button>
-        </div >
+        </div>
     )
 }
 

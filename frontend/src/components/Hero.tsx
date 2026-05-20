@@ -132,13 +132,13 @@ const Hero = ({ status }: HeroProps) => {
 
           {movies.length > 1 && (
             <div className="flex items-center gap-2 ml-4">
-              {movies.map((_, idx) => (
+              {movies.map((movie, idx) => (
                 <button
-                  key={idx}
+                  key={movie.id}
                   onClick={() => goToSlide(idx)}
                   className={`rounded-full transition-all duration-300 cursor-pointer ${idx === activeIndex
-                      ? "w-8 h-2 bg-[#00A3FF]"
-                      : "w-2 h-2 bg-white/30 hover:bg-white/60"
+                    ? "w-8 h-2 bg-[#00A3FF]"
+                    : "w-2 h-2 bg-white/30 hover:bg-white/60"
                     }`}
                   aria-label={`Go to slide ${idx + 1}`}
                 />
