@@ -5,15 +5,11 @@ import movieServices from "../services/movieServices";
 import type { Movie } from "../types";
 import LoadingState from "./LoadingState";
 import ErrorState from "./ErrorState";
-import Filter from "./Filter";
+import FilterMain from "./FilterMain";
 import { useNavigate } from "react-router";
 import { ArrowRight, FilterIcon } from "lucide-react";
 
-interface MovieListProps {
-    status: "now_showing" | "coming_soon";
-}
-
-const MoviesList = ({ status }: MovieListProps) => {
+const MoviesList = ({ status = "now_showing" }: { status: "now_showing" | "coming_soon" }) => {
     const queryFn = status === "now_showing" ? movieServices.getNowPlayingMovies : movieServices.getUpcomingMovies;
     const navigate = useNavigate();
 
@@ -26,7 +22,7 @@ const MoviesList = ({ status }: MovieListProps) => {
         <div className="flex flex-col gap-8 md:gap-12 px-4 md:px-8 mb-12">
             <div className="flex flex-row items-center gap-6">
                 <FilterIcon className="text-white w-6 h-6" />
-                <Filter />
+                <FilterMain />
             </div>
             <div className="flex flex-row justify-between">
                 <h2 className="text-2xl md:text-3xl lg:text-3xl font-bold text-[#E5E2E1] tracking-wide">
@@ -50,6 +46,7 @@ const MoviesList = ({ status }: MovieListProps) => {
                             onClick={() => navigate(`/movie/${movie.id}`)}
                             key={movie.id}
                             movie={movie}
+                            main={true}
                         />
                     ))}
                 </div>}

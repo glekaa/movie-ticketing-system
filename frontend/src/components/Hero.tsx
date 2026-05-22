@@ -12,11 +12,7 @@ import { buildMovieTags } from "../utils";
 
 const SCROLL_INTERVAL_MS = 6000;
 
-interface HeroProps {
-  status: "now_showing" | "coming_soon";
-}
-
-const Hero = ({ status }: HeroProps) => {
+const Hero = ({ status = "now_showing" }: { status: "now_showing" | "coming_soon" }) => {
   const queryFn = status === "now_showing" ? movieServices.getNowPlayingMovies : movieServices.getUpcomingMovies;
 
   const {

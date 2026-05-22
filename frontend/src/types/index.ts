@@ -17,7 +17,7 @@ export type Movie = {
     description: string;
     poster_url: string;
     backdrop_url: string;
-    age_rating: string;
+    age_rating: number;
     duration_minutes: number;
     release_date: string;
     status: string;

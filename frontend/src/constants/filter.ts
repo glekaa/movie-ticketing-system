@@ -33,9 +33,9 @@ export const FILTER_CATEGORY_OPTIONS = [
 ] as const;
 
 export const FILTER_AGE_OPTIONS = [
-    { value: "G", label: "G - General Audiences" },
-    { value: "PG", label: "PG - Parental Guidance" },
-    { value: "PG-13", label: "PG-13 - Parents Strongly Cautioned" },
-    { value: "R", label: "R - Restricted" },
-    { value: "NC-17", label: "NC-17 - Adults Only" },
+    { value: 0, label: "G - General Audiences" },
+    { value: 11, label: "PG - Parental Guidance" },
+    { value: 13, label: "PG-13 - Parents Strongly Cautioned" },
+    { value: 16, label: "R - Restricted" },
+    { value: 18, label: "NC-17 - Adults Only" },
 ] as const;
