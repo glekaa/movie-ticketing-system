@@ -2,15 +2,15 @@ import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useSearchParams } from "react-router";
 import movieServices from "../../services/movieServices";
-import MovieCard from "../../components/MovieCard";
-import LoadingState from "../../components/LoadingState";
-import ErrorState from "../../components/ErrorState";
+import MovieCard from "../../components/Movies/MovieCard";
+import LoadingState from "../../components/LayoutElements/LoadingState";
+import ErrorState from "../../components/LayoutElements/ErrorState";
 import { FILTER_GENRE_OPTIONS, FILTER_AGE_OPTIONS } from "../../constants/filter";
 import type { Movie } from "../../types";
-import { FilterDropdown } from "../../components/FilterDropdown";
-import { FilterChip } from "../../components/FilterChip";
-import { SearchInput } from "../../components/SearchInput";
-import FilterButton from "../../components/FilterButton";
+import { FilterDropdown } from "../../components/Filter/FilterDropdown";
+import { FilterChip } from "../../components/Filter/FilterChip";
+import { SearchInput } from "../../components/Filter/SearchInput";
+import FilterButton from "../../components/Filter/FilterButton";
 
 const AllMovies = () => {
     const navigate = useNavigate();
@@ -23,9 +23,9 @@ const AllMovies = () => {
 
     const { data: movies, isLoading, isError } = useQuery<Movie[]>({
         queryKey: ["movies", { selectedGenres, activeCategory }],
-        queryFn: () => movieServices.getAllMovies({ 
-            genres: selectedGenres, 
-            status: activeCategory 
+        queryFn: () => movieServices.getAllMovies({
+            genres: selectedGenres,
+            status: activeCategory
         })
     });
 

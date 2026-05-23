@@ -1,5 +1,5 @@
 import { User } from "lucide-react";
-import type { Movie } from "../types";
+import type { Movie } from "../../types";
 
 interface CastProps {
     movie: Movie;

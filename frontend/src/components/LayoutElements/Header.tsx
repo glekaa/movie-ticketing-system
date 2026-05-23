@@ -1,9 +1,9 @@
 import { MapPinIcon, ShoppingCart, User, Menu } from "lucide-react";
 import { useNavigate, useLocation } from "react-router";
-import { NAV_TABS } from "../constants/navigation";
+import { NAV_TABS } from "../../constants/navigation";
 import { useState } from "react";
 import MobileMenuModal from "./MobileMenuModal";
-import { useBasket } from "../context/BasketContext";
+import { useBasket } from "../../context/BasketContext";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

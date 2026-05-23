@@ -1,14 +1,14 @@
-import Button from "./Button";
-import Tag from "./Tag";
+import Button from "../Elements/Button";
+import Tag from "../Elements/Tag";
 import HeroOverlay from "./HeroOverlay";
-import LoadingState from "./LoadingState";
-import ErrorState from "./ErrorState";
+import LoadingState from "../LayoutElements/LoadingState";
+import ErrorState from "../LayoutElements/ErrorState";
 import { Play, Ticket } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import movieServices from "../services/movieServices";
-import type { Movie } from "../types";
+import movieServices from "../../services/movieServices";
+import type { Movie } from "../../types";
 import { useState, useEffect, useCallback } from "react";
-import { buildMovieTags } from "../utils";
+import { buildMovieTags } from "../../utils";
 import { useNavigate } from "react-router";
 
 const SCROLL_INTERVAL_MS = 6000;

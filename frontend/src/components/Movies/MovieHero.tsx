@@ -1,9 +1,9 @@
-import Tag from "./Tag";
+import Tag from "../Elements/Tag";
 import { Play } from "lucide-react";
 import HeroOverlay from "./HeroOverlay";
-import Button from "./Button";
-import type { Movie } from "../types";
-import { buildMovieTags } from "../utils";
+import Button from "../Elements/Button";
+import type { Movie } from "../../types";
+import { buildMovieTags } from "../../utils";
 
 interface MovieHeroProps {
     movie: Movie;

@@ -1,5 +1,5 @@
-import Hero from "../../components/Hero";
-import MoviesList from "../../components/MoviesList";
+import Hero from "../../components/Movies/Hero";
+import MoviesList from "../../components/Movies/MoviesList";
 
 const Movies = ({ status = "now_showing" }: { status?: "now_showing" | "coming_soon" }) => {
     return (

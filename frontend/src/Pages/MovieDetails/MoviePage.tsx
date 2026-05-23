@@ -2,12 +2,12 @@ import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import movieServices from "../../services/movieServices";
 import type { Movie } from "../../types";
-import MovieHero from "../../components/MovieHero";
-import Synopsis from "../../components/Synopsis";
-import Showtimes from "../../components/Showtimes";
-import Cast from "../../components/Cast";
-import LoadingState from "../../components/LoadingState";
-import ErrorState from "../../components/ErrorState";
+import MovieHero from "../../components/Movies/MovieHero";
+import Synopsis from "../../components/Movies/Synopsis";
+import Showtimes from "../../components/Movies/Showtimes";
+import Cast from "../../components/Movies/Cast";
+import LoadingState from "../../components/LayoutElements/LoadingState";
+import ErrorState from "../../components/LayoutElements/ErrorState";
 
 const MoviePage = () => {
     const { id } = useParams<{ id: string }>();

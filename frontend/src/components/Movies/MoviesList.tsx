@@ -1,10 +1,10 @@
 import MovieCard from "./MovieCard";
 import { useQuery } from "@tanstack/react-query";
-import movieServices from "../services/movieServices";
-import type { Movie } from "../types";
-import LoadingState from "./LoadingState";
-import ErrorState from "./ErrorState";
-import FilterMain from "./FilterMain";
+import movieServices from "../../services/movieServices";
+import type { Movie } from "../../types";
+import LoadingState from "../LayoutElements/LoadingState";
+import ErrorState from "../LayoutElements/ErrorState";
+import FilterMain from "../Filter/FilterMain";
 import { useNavigate } from "react-router";
 import { ArrowRight, FilterIcon } from "lucide-react";
 

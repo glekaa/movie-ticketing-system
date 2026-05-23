@@ -1,4 +1,4 @@
-import { NAV_TABS } from "../constants/navigation";
+import { NAV_TABS } from "../../constants/navigation";
 import { useNavigate, useLocation } from "react-router";
 import { X, ChevronRight } from "lucide-react";
 

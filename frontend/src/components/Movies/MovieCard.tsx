@@ -1,5 +1,5 @@
-import { formatDuration } from "../utils";
-import type { Movie } from "../types";
+import { formatDuration } from "../../utils";
+import type { Movie } from "../../types";
 
 interface MovieCardProps {
     movie: Movie;

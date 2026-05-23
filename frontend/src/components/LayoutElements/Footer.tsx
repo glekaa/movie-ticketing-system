@@ -1,6 +1,6 @@
 import { Link } from "react-router";
-import { NAV_TABS } from "../constants/navigation";
-import absoluteCinemaImg from '../assets/images/absolute_cinema (1).png';
+import { NAV_TABS } from "../../constants/navigation";
+import absoluteCinemaImg from '../../assets/images/absolute_cinema (1).png';
 
 const Footer = () => {
   return (

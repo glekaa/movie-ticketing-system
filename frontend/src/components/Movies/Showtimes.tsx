@@ -1,14 +1,14 @@
 import { useState, useMemo, useEffect } from "react";
-import Button from "./Button";
-import LoadingState from "./LoadingState";
-import ErrorState from "./ErrorState";
+import Button from "../Elements/Button";
+import LoadingState from "../LayoutElements/LoadingState";
+import ErrorState from "../LayoutElements/ErrorState";
 import { MapPin } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
-import movieServices from "../services/movieServices";
-import theaterServices from "../services/theaterServices";
-import { useBasket } from "../context/BasketContext";
-import type { Showtime, Theater, Movie } from "../types";
+import movieServices from "../../services/movieServices";
+import theaterServices from "../../services/theaterServices";
+import { useBasket } from "../../context/BasketContext";
+import type { Showtime, Theater, Movie } from "../../types";
 
 interface ShowtimesProps {
     movieId: string;
@@ -55,24 +55,24 @@ const Showtimes = ({ movieId }: ShowtimesProps) => {
 
         for (const showtime of showtimes) {
             const dateObj = new Date(showtime.start_time);
-            
+
             // Format to local date string YYYY-MM-DD
             const year = dateObj.getFullYear();
             const month = String(dateObj.getMonth() + 1).padStart(2, '0');
             const day = String(dateObj.getDate()).padStart(2, '0');
             const dateStr = `${year}-${month}-${day}`;
-            
+
             const theater = screenToTheater[showtime.screen_id];
             if (!theater) continue; // Skip if theater is unknown
 
             if (!dateMap[dateStr]) dateMap[dateStr] = {};
             if (!dateMap[dateStr][theater.name]) dateMap[dateStr][theater.name] = [];
-            
+
             dateMap[dateStr][theater.name].push(showtime);
         }
 
         const sortedDates = Object.keys(dateMap).sort();
-        
+
         // Format for tabs
         const dateTabs = sortedDates.map(dateStr => {
             const [y, m, d] = dateStr.split('-');
@@ -158,7 +158,7 @@ const Showtimes = ({ movieId }: ShowtimesProps) => {
     return (
         <div className="bg-[#141313] rounded-2xl p-6 border border-white/5 sticky top-24">
             <h2 className="text-xl font-bold mb-6 text-[#E5E2E1]">Select Showtime</h2>
-            
+
             {/* Dates */}
             <div className="mb-8 overflow-x-auto pb-2 scrollbar-hide">
                 <p className="text-[10px] text-[#8B8D8D] font-bold tracking-widest uppercase mb-3">Date</p>
@@ -166,18 +166,17 @@ const Showtimes = ({ movieId }: ShowtimesProps) => {
                     {dateTabs.length === 0 ? (
                         <span className="text-gray-500 text-sm">No showtimes available</span>
                     ) : dateTabs.map(tab => (
-                        <button 
+                        <button
                             key={tab.value}
                             onClick={() => {
                                 setSelectedDate(tab.value);
                                 setSelectedShowtime(null);
                                 setTicketCount(1);
                             }}
-                            className={`flex flex-col items-center justify-center px-4 py-2 rounded-full min-w-[70px] transition-all cursor-pointer ${
-                                selectedDate === tab.value 
-                                ? "bg-[#00A3FF] text-white shadow-[0_4px_15px_-4px_rgba(0,163,255,0.5)]" 
+                            className={`flex flex-col items-center justify-center px-4 py-2 rounded-full min-w-[70px] transition-all cursor-pointer ${selectedDate === tab.value
+                                ? "bg-[#00A3FF] text-white shadow-[0_4px_15px_-4px_rgba(0,163,255,0.5)]"
                                 : "bg-white/5 border border-white/10 text-[#C4C7C7] hover:bg-white/10 hover:text-white"
-                            }`}
+                                }`}
                         >
                             <span className="font-semibold text-sm">{tab.dayName}</span>
                             <span className="text-[10px] opacity-80">{tab.dateText}</span>
@@ -201,20 +200,19 @@ const Showtimes = ({ movieId }: ShowtimesProps) => {
                                     const isAvailable = st.status === "scheduled";
                                     const isSelected = selectedShowtime?.id === st.id;
                                     return (
-                                        <button 
+                                        <button
                                             key={st.id}
                                             disabled={!isAvailable}
                                             onClick={() => {
                                                 setSelectedShowtime(st);
                                                 setTicketCount(1);
                                             }}
-                                            className={`px-4 py-1.5 rounded-full text-xs transition-colors cursor-pointer ${
-                                                isAvailable 
+                                            className={`px-4 py-1.5 rounded-full text-xs transition-colors cursor-pointer ${isAvailable
                                                 ? isSelected
                                                     ? "bg-[#00A3FF] border border-[#00A3FF] text-white shadow-[0_4px_15px_-4px_rgba(0,163,255,0.5)]"
                                                     : "bg-[#0a0807] border border-white/10 text-[#C4C7C7] hover:border-white/30 hover:text-white"
                                                 : "bg-[#0a0807] border border-white/5 text-[#8B8D8D] opacity-50 cursor-not-allowed line-through"
-                                            }`}
+                                                }`}
                                         >
                                             {timeStr}
                                         </button>
@@ -261,14 +259,14 @@ const Showtimes = ({ movieId }: ShowtimesProps) => {
             )}
 
             {/* CTA */}
-            <Button 
+            <Button
                 onClick={handleAddToBasket}
-                className="w-full py-3 text-sm" 
-                variant="primary" 
+                className="w-full py-3 text-sm"
+                variant="primary"
                 disabled={!selectedShowtime}
             >
-                {selectedShowtime 
-                    ? `Add ${ticketCount} Ticket${ticketCount > 1 ? 's' : ''} to Basket` 
+                {selectedShowtime
+                    ? `Add ${ticketCount} Ticket${ticketCount > 1 ? 's' : ''} to Basket`
                     : "Select a Showtime"}
             </Button>
         </div>

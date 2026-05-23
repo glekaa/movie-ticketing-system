@@ -1,4 +1,4 @@
-import { FILTER_CATEGORY_OPTIONS } from "../constants/filter";
+import { FILTER_CATEGORY_OPTIONS } from "../../constants/filter";
 import { useState } from "react";
 import FilterButton from "./FilterButton";
 
