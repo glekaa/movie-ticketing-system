@@ -53,3 +53,26 @@ export type Theater = {
     location: string;
     screens: Screen[];
 };
+
+export type BasketItem = {
+    id: string;
+    movieId: string;
+    movieTitle: string;
+    moviePosterUrl: string;
+    movieDurationMinutes: number;
+    showtimeId: string;
+    showtimeTime: string;
+    showtimeDate: string;
+    theaterName: string;
+    quantity: number;
+    ticketPrice: number;
+    totalPrice: number;
+};
+
+export type BasketContextType = {
+    basket: BasketItem[];
+    addToBasket: (item: Omit<BasketItem, "id" | "totalPrice">) => void;
+    updateQuantity: (itemId: string, newQuantity: number) => void;
+    removeFromBasket: (itemId: string) => void;
+    clearBasket: () => void;
+};

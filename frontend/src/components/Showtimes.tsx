@@ -4,9 +4,11 @@ import LoadingState from "./LoadingState";
 import ErrorState from "./ErrorState";
 import { MapPin } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router";
 import movieServices from "../services/movieServices";
 import theaterServices from "../services/theaterServices";
-import type { Showtime, Theater } from "../types";
+import { useBasket } from "../context/BasketContext";
+import type { Showtime, Theater, Movie } from "../types";
 
 interface ShowtimesProps {
     movieId: string;
@@ -25,6 +27,17 @@ const Showtimes = ({ movieId }: ShowtimesProps) => {
     });
 
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
+    const [selectedShowtime, setSelectedShowtime] = useState<Showtime | null>(null);
+    const [ticketCount, setTicketCount] = useState<number>(1);
+
+    const navigate = useNavigate();
+    const { addToBasket } = useBasket();
+
+    const { data: movie } = useQuery<Movie>({
+        queryKey: ["movie", movieId],
+        queryFn: () => movieServices.getMovieById(movieId),
+        enabled: !!movieId,
+    });
 
     // Grouping
     const { dateTabs, showtimesByDateAndTheater } = useMemo(() => {
@@ -97,6 +110,49 @@ const Showtimes = ({ movieId }: ShowtimesProps) => {
         );
     }
 
+    const handleAddToBasket = () => {
+        if (!selectedShowtime || !movie) return;
+
+        const screenToTheater: Record<string, string> = {};
+        if (theaters) {
+            for (const t of theaters) {
+                for (const screen of t.screens) {
+                    screenToTheater[screen.id] = t.name;
+                }
+            }
+        }
+        const theaterName = screenToTheater[selectedShowtime.screen_id] || "Unknown Theater";
+
+        const dateObj = new Date(selectedShowtime.start_time);
+        const formattedDate = dateObj.toLocaleDateString("en-US", {
+            weekday: "long",
+            month: "short",
+            day: "numeric",
+            year: "numeric"
+        });
+
+        const formattedTime = dateObj.toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false
+        });
+
+        addToBasket({
+            movieId: movie.id,
+            movieTitle: movie.title,
+            moviePosterUrl: movie.poster_url,
+            movieDurationMinutes: movie.duration_minutes,
+            showtimeId: selectedShowtime.id,
+            showtimeTime: formattedTime,
+            showtimeDate: formattedDate,
+            theaterName,
+            quantity: ticketCount,
+            ticketPrice: Number(selectedShowtime.base_price),
+        });
+
+        navigate("/basket");
+    };
+
     const currentTheatersMap = selectedDate ? showtimesByDateAndTheater[selectedDate] : {};
 
     return (
@@ -112,7 +168,11 @@ const Showtimes = ({ movieId }: ShowtimesProps) => {
                     ) : dateTabs.map(tab => (
                         <button 
                             key={tab.value}
-                            onClick={() => setSelectedDate(tab.value)}
+                            onClick={() => {
+                                setSelectedDate(tab.value);
+                                setSelectedShowtime(null);
+                                setTicketCount(1);
+                            }}
                             className={`flex flex-col items-center justify-center px-4 py-2 rounded-full min-w-[70px] transition-all cursor-pointer ${
                                 selectedDate === tab.value 
                                 ? "bg-[#00A3FF] text-white shadow-[0_4px_15px_-4px_rgba(0,163,255,0.5)]" 
@@ -139,13 +199,20 @@ const Showtimes = ({ movieId }: ShowtimesProps) => {
                                 {theaterShowtimes.sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime()).map(st => {
                                     const timeStr = new Date(st.start_time).toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit', hour12: false });
                                     const isAvailable = st.status === "scheduled";
+                                    const isSelected = selectedShowtime?.id === st.id;
                                     return (
                                         <button 
                                             key={st.id}
                                             disabled={!isAvailable}
+                                            onClick={() => {
+                                                setSelectedShowtime(st);
+                                                setTicketCount(1);
+                                            }}
                                             className={`px-4 py-1.5 rounded-full text-xs transition-colors cursor-pointer ${
                                                 isAvailable 
-                                                ? "bg-[#0a0807] border border-white/10 text-[#C4C7C7] hover:border-white/30 hover:text-white"
+                                                ? isSelected
+                                                    ? "bg-[#00A3FF] border border-[#00A3FF] text-white shadow-[0_4px_15px_-4px_rgba(0,163,255,0.5)]"
+                                                    : "bg-[#0a0807] border border-white/10 text-[#C4C7C7] hover:border-white/30 hover:text-white"
                                                 : "bg-[#0a0807] border border-white/5 text-[#8B8D8D] opacity-50 cursor-not-allowed line-through"
                                             }`}
                                         >
@@ -161,9 +228,48 @@ const Showtimes = ({ movieId }: ShowtimesProps) => {
                 )}
             </div>
 
+            {/* Ticket Counter */}
+            {selectedShowtime && (
+                <section className="mb-6 bg-white/5 border border-white/5 rounded-xl p-4 animate-fade-in space-y-3">
+                    <p className="text-[10px] text-[#8B8D8D] font-bold tracking-widest uppercase">Tickets</p>
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <button
+                                type="button"
+                                onClick={() => setTicketCount(prev => Math.max(1, prev - 1))}
+                                className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition-colors cursor-pointer"
+                            >
+                                -
+                            </button>
+                            <span className="text-white font-semibold text-base w-6 text-center">{ticketCount}</span>
+                            <button
+                                type="button"
+                                onClick={() => setTicketCount(prev => prev + 1)}
+                                className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition-colors cursor-pointer"
+                            >
+                                +
+                            </button>
+                        </div>
+                        <div className="text-right">
+                            <span className="text-xs text-gray-400 block">Total Price</span>
+                            <span className="text-base font-bold text-white font-['Montserrat']">
+                                ${(ticketCount * Number(selectedShowtime.base_price)).toFixed(2)}
+                            </span>
+                        </div>
+                    </div>
+                </section>
+            )}
+
             {/* CTA */}
-            <Button className="w-full py-3 text-sm" variant="primary" disabled={!selectedDate || !currentTheatersMap || Object.keys(currentTheatersMap).length === 0}>
-                Continue to Seat Selection
+            <Button 
+                onClick={handleAddToBasket}
+                className="w-full py-3 text-sm" 
+                variant="primary" 
+                disabled={!selectedShowtime}
+            >
+                {selectedShowtime 
+                    ? `Add ${ticketCount} Ticket${ticketCount > 1 ? 's' : ''} to Basket` 
+                    : "Select a Showtime"}
             </Button>
         </div>
     );
