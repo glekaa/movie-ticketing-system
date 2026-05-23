@@ -1,4 +1,3 @@
-import { useState, useMemo } from "react";
 import MovieCard from "./MovieCard";
 import { useQuery } from "@tanstack/react-query";
 import movieServices from "../services/movieServices";
@@ -29,7 +28,7 @@ const MoviesList = ({ status = "now_showing" }: { status: "now_showing" | "comin
                     {status === "now_showing" ? "Now Playing" : "Coming Soon"}
                 </h2>
                 <button
-                    onClick={() => navigate(`/movies`)}
+                    onClick={() => navigate(`/movies?category=${status}`)}
                     className="text-base md:text-lg lg:text-xl text-blue-400 cursor-pointer hover:text-white flex items-center gap-2">
                     <span>See All</span>
                     <ArrowRight className="w-4 h-4" />

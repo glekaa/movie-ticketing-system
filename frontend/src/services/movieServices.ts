@@ -1,16 +1,33 @@
 import api from "./api";
 
+export interface MovieFilters {
+    skip?: number;
+    limit?: number;
+    genres?: string[];
+    status?: string;
+}
+
 const movieServices = {
-    async getAllMovies() {
-        const response = await api.get("/movies/");
+    async getAllMovies(filters?: MovieFilters) {
+        const params = new URLSearchParams();
+        if (filters?.skip !== undefined) params.append('skip', filters.skip.toString());
+        if (filters?.limit !== undefined) params.append('limit', filters.limit.toString());
+        if (filters?.status && filters.status !== 'all') params.append('status', filters.status);
+        if (filters?.genres && filters.genres.length > 0) {
+            filters.genres.forEach(g => params.append('genres', g));
+        }
+
+        const queryString = params.toString();
+        const url = queryString ? `/movies/?${queryString}` : "/movies/";
+        const response = await api.get(url);
         return response.data;
     },
     async getNowPlayingMovies() {
-        const response = await api.get("/movies/?status=now_showing");
+        const response = await api.get("/movies/?status=now_showing&limit=20");
         return response.data;
     },
     async getUpcomingMovies() {
-        const response = await api.get("/movies/?status=coming_soon");
+        const response = await api.get("/movies/?status=coming_soon&limit=20");
         return response.data;
     },
     async getMovieById(id: string) {
@@ -19,10 +36,6 @@ const movieServices = {
     },
     async getMovieShowtimes(id: string) {
         const response = await api.get(`/movies/${id}/showtimes`);
-        return response.data;
-    },
-    async getMovieByGenres(genres: string[]) {
-        const response = await api.get(`/movies/?genres=${genres.join(",")}`);
         return response.data;
     },
 

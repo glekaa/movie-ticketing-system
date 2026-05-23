@@ -9,10 +9,12 @@ import movieServices from "../services/movieServices";
 import type { Movie } from "../types";
 import { useState, useEffect, useCallback } from "react";
 import { buildMovieTags } from "../utils";
+import { useNavigate } from "react-router";
 
 const SCROLL_INTERVAL_MS = 6000;
 
 const Hero = ({ status = "now_showing" }: { status: "now_showing" | "coming_soon" }) => {
+  const navigate = useNavigate();
   const queryFn = status === "now_showing" ? movieServices.getNowPlayingMovies : movieServices.getUpcomingMovies;
 
   const {
@@ -116,7 +118,7 @@ const Hero = ({ status = "now_showing" }: { status: "now_showing" | "coming_soon
 
         <div className="flex flex-row items-center gap-4">
           <div className="flex flex-row gap-2">
-            <Button variant="primary">
+            <Button variant="primary" onClick={() => navigate(`/movie/${currentMovie.id}`)}>
               <Ticket />
               Book Now
             </Button>

@@ -5,10 +5,10 @@ import { useState } from "react";
 import MobileMenuModal from "./MobileMenuModal";
 
 const Header = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
+    setIsMenuOpen(!isMenuOpen);
   };
 
   const navigate = useNavigate();
@@ -47,7 +47,7 @@ const Header = () => {
           <Menu className="w-5 h-5" />
         </button>
       </div>
-      {isOpen && <MobileMenuModal toggleMenu={toggleMenu} />}
+      {isMenuOpen && <MobileMenuModal toggleMenu={toggleMenu} />}
     </header>
   );
 };

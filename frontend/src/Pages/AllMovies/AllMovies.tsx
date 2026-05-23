@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import movieServices from "../../services/movieServices";
 import MovieCard from "../../components/MovieCard";
 import LoadingState from "../../components/LoadingState";
@@ -14,15 +14,19 @@ import FilterButton from "../../components/FilterButton";
 
 const AllMovies = () => {
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
 
     const [search, setSearch] = useState("");
     const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
     const [selectedAges, setSelectedAges] = useState<number[]>([]);
-    const [activeCategory, setActiveCategory] = useState<string>("all");
+    const [activeCategory, setActiveCategory] = useState<string>(searchParams.get("category") || "all");
 
     const { data: movies, isLoading, isError } = useQuery<Movie[]>({
-        queryKey: ["movies"],
-        queryFn: movieServices.getAllMovies
+        queryKey: ["movies", { selectedGenres, activeCategory }],
+        queryFn: () => movieServices.getAllMovies({ 
+            genres: selectedGenres, 
+            status: activeCategory 
+        })
     });
 
     const filteredMovies = useMemo(() => {
@@ -30,9 +34,6 @@ const AllMovies = () => {
 
         return movies.filter((movie) => {
             const matchesSearch = movie.title.toLowerCase().includes(search.toLowerCase());
-
-            const matchesGenre = selectedGenres.length === 0 ||
-                selectedGenres.some(selected => movie.genres.some(g => g.name.toLowerCase() === selected.toLowerCase()));
 
             const matchesAge = selectedAges.length === 0 ||
                 selectedAges.some(selected => {
@@ -44,11 +45,9 @@ const AllMovies = () => {
                     return movie.age_rating >= selected;
                 });
 
-            const matchesCategory = activeCategory === "all" || movie.status === activeCategory;
-
-            return matchesSearch && matchesGenre && matchesAge && matchesCategory;
+            return matchesSearch && matchesAge;
         });
-    }, [movies, search, selectedGenres, selectedAges, activeCategory]);
+    }, [movies, search, selectedAges]);
 
     const toggleGenre = (genreValue: string) => {
         setSelectedGenres(prev =>
