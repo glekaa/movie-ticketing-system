@@ -1,28 +1,7 @@
 import { useNavigate } from "react-router";
 import { CheckCircle, MapPin, Calendar, Clock, Ticket } from "lucide-react";
 import Button from "../Elements/Button";
-
-interface ReceiptItem {
-    id: string;
-    moviePosterUrl: string;
-    movieTitle: string;
-    theaterName: string;
-    showtimeDate: string;
-    showtimeTime: string;
-    quantity: number;
-    totalPrice: number;
-}
-
-interface ReceiptData {
-    customerName: string;
-    customerEmail: string;
-    bookingReference: string;
-    date: string;
-    items: ReceiptItem[];
-    ticketSubtotal: number;
-    totalBookingFee: number;
-    grandTotal: number;
-}
+import type { ReceiptData } from "../../types";
 
 interface ReceiptViewProps {
     receiptData: ReceiptData;

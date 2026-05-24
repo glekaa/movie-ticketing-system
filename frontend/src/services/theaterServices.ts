@@ -5,6 +5,8 @@ const theaterServices = {
         const response = await api.get("/theaters/");
         return response.data;
     },
+
+    //Admin-only services
 };
 
 export default theaterServices;

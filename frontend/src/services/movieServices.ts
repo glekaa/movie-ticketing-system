@@ -1,4 +1,5 @@
 import api from "./api";
+import type { MovieCreateDTO, MovieUpdateDTO } from "../types";
 
 export interface MovieFilters {
     skip?: number;
@@ -22,14 +23,6 @@ const movieServices = {
         const response = await api.get(url);
         return response.data;
     },
-    async getNowPlayingMovies() {
-        const response = await api.get("/movies/?status=now_showing&limit=20");
-        return response.data;
-    },
-    async getUpcomingMovies() {
-        const response = await api.get("/movies/?status=coming_soon&limit=20");
-        return response.data;
-    },
     async getMovieById(id: string) {
         const response = await api.get(`/movies/${id}`);
         return response.data;
@@ -40,11 +33,11 @@ const movieServices = {
     },
 
     // Admin-only methods
-    async createMovie(movie: any) {
+    async createMovie(movie: MovieCreateDTO) {
         const response = await api.post("/movies/", movie);
         return response.data;
     },
-    async updateMovie(id: string, movie: any) {
+    async updateMovie(id: string, movie: MovieUpdateDTO) {
         const response = await api.put(`/movies/${id}`, movie);
         return response.data;
     },

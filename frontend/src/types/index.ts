@@ -76,3 +76,39 @@ export type BasketContextType = {
     removeFromBasket: (itemId: string) => void;
     clearBasket: () => void;
 };
+
+export type MovieCreateDTO = {
+    title: string;
+    description: string;
+    poster_url: string;
+    backdrop_url: string;
+    duration_minutes: number;
+    age_rating: number;
+    release_date: string;
+    status: string;
+    genre_ids: string[];
+};
+
+export type MovieUpdateDTO = Partial<MovieCreateDTO>;
+
+export type ReceiptItem = {
+    id: string;
+    moviePosterUrl: string;
+    movieTitle: string;
+    theaterName: string;
+    showtimeDate: string;
+    showtimeTime: string;
+    quantity: number;
+    totalPrice: number;
+};
+
+export type ReceiptData = {
+    customerName: string;
+    customerEmail: string;
+    bookingReference: string;
+    date: string;
+    items: ReceiptItem[];
+    ticketSubtotal: number;
+    totalBookingFee: number;
+    grandTotal: number;
+};

@@ -138,7 +138,7 @@ const AllMovies = () => {
                                     );
                                 })}
                                 {selectedAges.map(age => {
-                                    const label = FILTER_AGE_OPTIONS.find(a => a.value === age)?.value;
+                                    const label = FILTER_AGE_OPTIONS.find(a => a.value === age)?.label;
                                     return (
                                         <FilterChip
                                             key={age}

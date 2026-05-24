@@ -15,15 +15,15 @@ const SCROLL_INTERVAL_MS = 6000;
 
 const Hero = ({ status = "now_showing" }: { status: "now_showing" | "coming_soon" }) => {
   const navigate = useNavigate();
-  const queryFn = status === "now_showing" ? movieServices.getNowPlayingMovies : movieServices.getUpcomingMovies;
 
   const {
     data: movies,
     isLoading,
     isError,
+    error
   } = useQuery<Movie[]>({
-    queryKey: ["movies", status],
-    queryFn,
+    queryKey: ["movies-hero", status],
+    queryFn: () => movieServices.getAllMovies({ status, limit: 5 }),
   });
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -60,6 +60,8 @@ const Hero = ({ status = "now_showing" }: { status: "now_showing" | "coming_soon
   }
 
   if (isError) {
+    console.log(error)
+    console.log(movies)
     return (
       <div className="relative w-full h-[70vh] flex items-center justify-center bg-[#141313]">
         <ErrorState message="Error loading movies" />

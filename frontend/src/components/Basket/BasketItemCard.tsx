@@ -1,8 +1,9 @@
 import { formatDuration } from "../../utils";
 import { Trash2, MapPin, Calendar, Clock } from "lucide-react";
+import type { BasketItem } from "../../types";
 
 interface BasketItemProps {
-    item: any;
+    item: BasketItem;
     handleRemoveItem: (id: string) => void;
     handleQuantityChange: (id: string, newQuantity: number) => void;
 }

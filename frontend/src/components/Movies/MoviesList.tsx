@@ -9,12 +9,11 @@ import { useNavigate } from "react-router";
 import { ArrowRight, FilterIcon } from "lucide-react";
 
 const MoviesList = ({ status = "now_showing" }: { status: "now_showing" | "coming_soon" }) => {
-    const queryFn = status === "now_showing" ? movieServices.getNowPlayingMovies : movieServices.getUpcomingMovies;
     const navigate = useNavigate();
 
     const { data: movies, isLoading, isError } = useQuery<Movie[]>({
-        queryKey: ["movies", status],
-        queryFn,
+        queryKey: ["movies-list", status],
+        queryFn: () => movieServices.getAllMovies({ status, limit: 20 }),
     });
 
     return (

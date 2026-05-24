@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import Button from "./Button";
+import Button from "../Elements/Button";
 
 interface FilterChipProps {
     label: string;

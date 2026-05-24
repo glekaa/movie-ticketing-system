@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import Button from "./Button";
+import Button from "../Elements/Button";
 
 export interface FilterOption<T> {
     label: string;
