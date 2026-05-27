@@ -63,8 +63,10 @@ export type { MovieCreateForm } from "../schemas/moviesSchemes";
 export type Screen = {
     id: string;
     name: string;
-    capacity: number;
-    theater_id: string;
+    total_rows: number;
+    seats_per_row: number;
+    capacity?: number;
+    theater_id?: string;
 };
 
 export type Theater = {

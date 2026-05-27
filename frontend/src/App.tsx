@@ -12,6 +12,7 @@ const BasketPage = lazy(() => import("./Pages/Basket/BasketPage"));
 const NotFound = lazy(() => import("./Pages/NotFound/NotFound"));
 const AdminDashboard = lazy(() => import("./Pages/Admin/AdminDashboard"));
 const MovieTable = lazy(() => import("./Pages/Admin/MoviesTable"));
+const TheatersTable = lazy(() => import("./Pages/Admin/TheatersTable"));
 const MovieDetails = lazy(() => import("./Pages/Admin/MovieDetails"));
 const MovieCreate = lazy(() => import("./Pages/Admin/MovieCreate"));
 const MovieEdit = lazy(() => import("./Pages/Admin/MovieEdit"));
@@ -54,6 +55,7 @@ const App = () => {
           <Route path="/admin" element={<AdminLayoutWrapper />}>
             <Route index element={<AdminDashboard />} />
             <Route path="movies-management" element={<MovieTable />} />
+            <Route path="theaters-management" element={<TheatersTable />} />
             <Route path="movies-management/:id" element={<MovieDetails />} />
             <Route path="movies-management/:id/edit" element={<MovieEdit />} />
             <Route path="movies-management/create" element={<MovieCreate />} />
