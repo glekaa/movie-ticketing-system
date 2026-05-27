@@ -8,8 +8,8 @@ import DetailsHeader from "../../components/Admin/MovieDetails/DetailsHeader";
 import DetailsMedia from "../../components/Admin/MovieDetails/DetailsMedia";
 import DetailsMetadata from "../../components/Admin/MovieDetails/DetailsMetadata";
 import DetailsNarrative from "../../components/Admin/MovieDetails/DetailsNarrative";
-import DetailsShowtimes from "../../components/Admin/MovieDetails/DetailsShowtimes";
 import DetailsFooter from "../../components/Admin/MovieDetails/DetailsFooter";
+import ShowtimesTable from "./ShowtimesTable";
 
 const MovieDetails = () => {
     const { id } = useParams<{ id: string }>();
@@ -20,13 +20,6 @@ const MovieDetails = () => {
     const { data: movie, isLoading, isError } = useQuery({
         queryKey: ["adminMovie", id],
         queryFn: () => movieServices.getMovieById(id!),
-        enabled: !!id,
-    });
-
-    // Fetch showtimes linked to the movie
-    const { data: showtimes, isLoading: isShowtimesLoading } = useQuery({
-        queryKey: ["adminMovieShowtimes", id],
-        queryFn: () => movieServices.getMovieShowtimes(id!),
         enabled: !!id,
     });
 
@@ -104,10 +97,7 @@ const MovieDetails = () => {
             />
 
             {/* 5. Showtimes Table */}
-            <DetailsShowtimes
-                showtimes={showtimes}
-                isLoading={isShowtimesLoading}
-            />
+            <ShowtimesTable movieID={movie.id} />
 
             {/* 6. Info Footprint */}
             <DetailsFooter

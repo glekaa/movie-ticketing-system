@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import showtimeServices from "../../services/showtimeServices";
 import movieServices from "../../services/movieServices";
 import theaterServices from "../../services/theaterServices";
@@ -11,6 +11,7 @@ import { FormInput, FormSelect } from "../../components/Elements/FormElements";
 
 const ShowtimeCreate = () => {
     const navigate = useNavigate();
+    const { id } = useParams();
     const queryClient = useQueryClient();
 
     const { data: movies } = useQuery<Movie[]>({
@@ -23,7 +24,7 @@ const ShowtimeCreate = () => {
         queryFn: () => theaterServices.getAllTheaters()
     });
 
-    const [movieId, setMovieId] = useState("");
+    const [movieId, setMovieId] = useState(id);
     const [theaterId, setTheaterId] = useState("");
     const [screenId, setScreenId] = useState("");
     const [startTime, setStartTime] = useState("");
@@ -33,14 +34,14 @@ const ShowtimeCreate = () => {
     const mutation = useMutation({
         mutationFn: (data: any) => showtimeServices.createShowtime(data),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["showtimes"] });
-            navigate("/admin/showtimes-management");
+            queryClient.invalidateQueries({ queryKey: ["showtimes", movieId] });
+            navigate(`/admin/movies-management/${movieId}`);
         }
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         let formattedStartTime = "";
         let formattedEndTime = "";
         try {
@@ -68,10 +69,10 @@ const ShowtimeCreate = () => {
             <div className="py-4 mb-6 mt-4 flex justify-between items-center bg-[#121111]">
                 <div>
                     <button
-                        onClick={() => navigate("/admin/showtimes-management")}
+                        onClick={() => navigate(-1)}
                         className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm mb-2 cursor-pointer bg-transparent border-none outline-none"
                     >
-                        <ArrowLeft className="w-4 h-4" /> Back to Table
+                        <ArrowLeft className="w-4 h-4" /> Back to Movie Details
                     </button>
                     <h1 className="text-3xl font-bold text-gray-200">Create New Showtime</h1>
                     <p className="text-sm text-gray-400 mt-1">Schedule a movie.</p>
@@ -137,14 +138,14 @@ const ShowtimeCreate = () => {
                     label="Base Price ($)"
                     type="number"
                     min="0"
-                    step="0.01"
+                    step="1"
                     required
                     value={basePrice}
                     onChange={e => setBasePrice(e.target.value)}
                 />
 
                 <div className="flex justify-end gap-4 mt-4">
-                    <Button type="button" variant="secondary" onClick={() => navigate("/admin/showtimes-management")}>Cancel</Button>
+                    <Button type="button" variant="secondary" onClick={() => navigate(-1)}>Cancel</Button>
                     <Button type="submit" variant="primary" disabled={mutation.isPending}>
                         {mutation.isPending ? "Creating..." : "Create Showtime"}
                     </Button>

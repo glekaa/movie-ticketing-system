@@ -8,6 +8,7 @@ import Button from "../../components/Elements/Button"
 import SearchInput from "../../components/Filter/SearchInput"
 import { useSearchParams, useNavigate } from "react-router"
 import FilterButton from "../../components/Filter/FilterButton"
+import AdminTabs from "../../components/Admin/AdminTabs"
 
 const MoviesTable = () => {
     const navigate = useNavigate();
@@ -44,20 +45,7 @@ const MoviesTable = () => {
     return (
         <main className="flex flex-col px-4 md:px-8 flex-1">
             {/* Tabs Navigation */}
-            <div className="flex gap-6 border-b border-gray-800/50 mt-6 mb-2">
-                <button
-                    onClick={() => navigate("/admin/movies-management")}
-                    className="pb-3 text-sm font-semibold uppercase tracking-wider border-b-2 border-blue-500 text-blue-400 cursor-pointer transition-all"
-                >
-                    Movies
-                </button>
-                <button
-                    onClick={() => navigate("/admin/theaters-management")}
-                    className="pb-3 text-sm font-semibold uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-300 cursor-pointer transition-all"
-                >
-                    Theaters
-                </button>
-            </div>
+            <AdminTabs activeTab="movies" />
 
             <div className="sticky top-0 z-10 py-4 mb-6 mt-2 flex justify-between items-end bg-[#121111]">
                 <div>

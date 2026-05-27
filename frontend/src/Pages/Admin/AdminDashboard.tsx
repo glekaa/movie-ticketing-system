@@ -34,15 +34,6 @@ const DASHBOARD_CARDS = [
             { label: "Best Selling Theater", value: "N/A" },
         ],
         buttonText: "Go to Sales & Analytics Table"
-    },
-    {
-        title: "Showtimes Management",
-        stats: [
-            { label: "Showtimes today", value: 0 },
-            { label: "Active Screens now", value: 0 },
-            { label: "Next session", value: "N/A" },
-        ],
-        buttonText: "Go to Showtimes Table"
     }
 ];
 

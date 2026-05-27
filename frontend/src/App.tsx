@@ -17,7 +17,6 @@ const TheatersTable = lazy(() => import("./Pages/Admin/TheatersTable"));
 const MovieDetails = lazy(() => import("./Pages/Admin/MovieDetails"));
 const MovieCreate = lazy(() => import("./Pages/Admin/MovieCreate"));
 const MovieEdit = lazy(() => import("./Pages/Admin/MovieEdit"));
-const ShowtimesTable = lazy(() => import("./Pages/Admin/ShowtimesTable"));
 const ShowtimeCreate = lazy(() => import("./Pages/Admin/ShowtimeCreate"));
 
 const LayoutWrapper = () => (
@@ -61,8 +60,7 @@ const App = () => {
             <Route path="movies-management/:id" element={<MovieDetails />} />
             <Route path="movies-management/:id/edit" element={<MovieEdit />} />
             <Route path="movies-management/create" element={<MovieCreate />} />
-            <Route path="showtimes-management" element={<ShowtimesTable />} />
-            <Route path="showtimes-management/create" element={<ShowtimeCreate />} />
+            <Route path="movies-management/:id/showtime/create" element={<ShowtimeCreate />} />
             <Route path="*" element={<AdminDashboard />} />
           </Route>
         </Routes>
