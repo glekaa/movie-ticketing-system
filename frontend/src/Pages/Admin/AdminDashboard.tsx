@@ -86,7 +86,7 @@ const AdminDashboard = () => {
         if (theaters) {
             const openLocations = theaters.length;
             const totalScreens = theaters.reduce((acc, theater) => acc + theater.screens.length, 0);
-            const totalSeatingCapacity = theaters.reduce((acc, theater) => acc + theater.screens.reduce((acc, screen) => acc + screen.capacity, 0), 0);
+            const totalSeatingCapacity = theaters.reduce((acc, theater) => acc + theater.screens.reduce((acc, screen) => acc + (screen.total_rows * screen.seats_per_row), 0), 0);
 
             setDashboardCards(prev => prev.map(card => {
                 if (card.title === "Theaters Management") {
