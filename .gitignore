@@ -23,3 +23,6 @@ __pycache__/
 
 # Logs
 *.log
+
+user_flow_analysis.txt
+user_scenarios.txt
