@@ -7,8 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import movieServices from "../../services/movieServices";
 import theaterServices from "../../services/theaterServices";
-import { useBasket } from "../../context/BasketContext";
-import type { Showtime, Theater, Movie } from "../../types";
+import type { Showtime, Theater } from "../../types";
 
 interface ShowtimesProps {
     movieId: string;
@@ -31,13 +30,6 @@ const Showtimes = ({ movieId }: ShowtimesProps) => {
     const [ticketCount, setTicketCount] = useState<number>(1);
 
     const navigate = useNavigate();
-    const { addToBasket } = useBasket();
-
-    const { data: movie } = useQuery<Movie>({
-        queryKey: ["movie", movieId],
-        queryFn: () => movieServices.getMovieById(movieId),
-        enabled: !!movieId,
-    });
 
     // Grouping
     const { dateTabs, showtimesByDateAndTheater } = useMemo(() => {
@@ -110,49 +102,6 @@ const Showtimes = ({ movieId }: ShowtimesProps) => {
         );
     }
 
-    const handleAddToBasket = () => {
-        if (!selectedShowtime || !movie) return;
-
-        const screenToTheater: Record<string, string> = {};
-        if (theaters) {
-            for (const t of theaters) {
-                for (const screen of t.screens) {
-                    screenToTheater[screen.id] = t.name;
-                }
-            }
-        }
-        const theaterName = screenToTheater[selectedShowtime.screen_id] || "Unknown Theater";
-
-        const dateObj = new Date(selectedShowtime.start_time);
-        const formattedDate = dateObj.toLocaleDateString("en-US", {
-            weekday: "long",
-            month: "short",
-            day: "numeric",
-            year: "numeric"
-        });
-
-        const formattedTime = dateObj.toLocaleTimeString("en-US", {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: false
-        });
-
-        addToBasket({
-            movieId: movie.id,
-            movieTitle: movie.title,
-            moviePosterUrl: movie.poster_url,
-            movieDurationMinutes: movie.duration_minutes,
-            showtimeId: selectedShowtime.id,
-            showtimeTime: formattedTime,
-            showtimeDate: formattedDate,
-            theaterName,
-            quantity: ticketCount,
-            ticketPrice: Number(selectedShowtime.base_price),
-        });
-
-        navigate("/basket");
-    };
-
     const currentTheatersMap = selectedDate ? showtimesByDateAndTheater[selectedDate] : {};
 
     return (
@@ -173,7 +122,7 @@ const Showtimes = ({ movieId }: ShowtimesProps) => {
                                 setSelectedShowtime(null);
                                 setTicketCount(1);
                             }}
-                            className={`flex flex-col items-center justify-center px-4 py-2 rounded-full min-w-[70px] transition-all cursor-pointer ${selectedDate === tab.value
+                            className={`flex flex-col items-center justify-center px-4 py-2 rounded-full min-w-[80px] transition-all cursor-pointer ${selectedDate === tab.value
                                 ? "bg-[#00A3FF] text-white shadow-[0_4px_15px_-4px_rgba(0,163,255,0.5)]"
                                 : "bg-white/5 border border-white/10 text-[#C4C7C7] hover:bg-white/10 hover:text-white"
                                 }`}
@@ -260,14 +209,12 @@ const Showtimes = ({ movieId }: ShowtimesProps) => {
 
             {/* CTA */}
             <Button
-                onClick={handleAddToBasket}
-                className="w-full py-3 text-sm"
+                onClick={() => navigate(`/movie/${movieId}/seats?showtime_id=${selectedShowtime?.id}&ticket_count=${ticketCount}`)}
+                className={`w-full py-3 text-sm ${!selectedShowtime ? "bg-black/5 border-white/5 text-[#8B8D8D] opacity-50 cursor-not-allowed" : ""}`}
                 variant="primary"
                 disabled={!selectedShowtime}
             >
-                {selectedShowtime
-                    ? `Add ${ticketCount} Ticket${ticketCount > 1 ? 's' : ''} to Basket`
-                    : "Select a Showtime"}
+                Continue to seat selection
             </Button>
         </section>
     );
