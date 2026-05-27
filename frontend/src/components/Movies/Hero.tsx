@@ -81,7 +81,7 @@ const Hero = ({ status = "now_showing" }: { status: "now_showing" | "coming_soon
   const allTags = buildMovieTags(currentMovie);
 
   return (
-    <div className="relative w-full h-[70vh] overflow-hidden px-10 pb-20">
+    <section className="relative w-full h-[70vh] overflow-hidden px-10 pb-20">
       {movies.map((movie, idx) => (
         <div
           key={movie.id}
@@ -147,7 +147,7 @@ const Hero = ({ status = "now_showing" }: { status: "now_showing" | "coming_soon
           )}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

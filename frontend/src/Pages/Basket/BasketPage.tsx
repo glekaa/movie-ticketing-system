@@ -87,7 +87,7 @@ const BasketPage = () => {
 
     return (
         <main className="max-w-7xl mx-auto px-4 md:px-8 py-10 animate-fade-in">
-            <header className="flex items-center gap-4 mb-8">
+            <div className="flex items-center gap-4 mb-8">
                 <button
                     onClick={() => navigate(-1)}
                     className="p-2 rounded-full border border-white/10 hover:bg-white/5 text-gray-400 hover:text-white transition-all cursor-pointer"
@@ -99,7 +99,7 @@ const BasketPage = () => {
                     <h1 className="text-3xl font-bold text-white font-['Montserrat'] tracking-wide">Ticket Basket</h1>
                     <p className="text-xs text-gray-400">Review your ticket reservations and complete your booking</p>
                 </div>
-            </header>
+            </div>
 
             {/* Grid layout */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">

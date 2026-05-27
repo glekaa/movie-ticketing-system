@@ -68,7 +68,7 @@ const AllMovies = () => {
     const availableGenres = FILTER_GENRE_OPTIONS.filter(g => g.value !== "all");
 
     return (
-        <div className="flex flex-col px-4 md:px-8 mb-12 min-h-screen mt-8 relative">
+        <main className="flex flex-col px-4 md:px-8 mb-12 min-h-screen mt-8 relative">
 
             {/* Top Sticky Header: Title & Search */}
             <div className="sticky top-0 bg-[#141313] z-40 py-6 mb-8 border-b border-white/5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -163,7 +163,7 @@ const AllMovies = () => {
                 </aside>
 
                 {/* Main Content - Grid */}
-                <main className="flex-1 flex flex-col relative w-full">
+                <section className="flex-1 flex flex-col relative w-full">
                     {isLoading ? (
                         <LoadingState message="Loading movies..." />
                     ) : isError ? (
@@ -181,9 +181,9 @@ const AllMovies = () => {
                             ))}
                         </div>
                     )}
-                </main>
+                </section>
             </div>
-        </div>
+        </main>
     );
 };
 

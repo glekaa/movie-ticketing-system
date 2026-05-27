@@ -17,7 +17,7 @@ const MoviesList = ({ status = "now_showing" }: { status: "now_showing" | "comin
     });
 
     return (
-        <div className="flex flex-col gap-8 md:gap-12 px-4 md:px-8 mb-12">
+        <section className="flex flex-col gap-8 md:gap-12 px-4 md:px-8 mb-12">
             <div className="flex flex-row items-center gap-6">
                 <FilterIcon className="text-white w-6 h-6" />
                 <FilterMain />
@@ -48,7 +48,7 @@ const MoviesList = ({ status = "now_showing" }: { status: "now_showing" | "comin
                         />
                     ))}
                 </div>}
-        </div>
+        </section>
     )
 }
 

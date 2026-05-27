@@ -1,9 +1,15 @@
+// ==========================================
+// Genre Types
+// ==========================================
 export type Genre = {
     id: string;
     name: string;
     slug: string;
 };
 
+// ==========================================
+// Person (Cast / Crew) Types
+// ==========================================
 export type Person = {
     name: string;
     profile_url: string | null;
@@ -11,6 +17,9 @@ export type Person = {
     job: string | null;
 };
 
+// ==========================================
+// Movie Types & DTOs
+// ==========================================
 export type Movie = {
     id: string;
     title: string;
@@ -31,15 +40,26 @@ export type Movie = {
     language: string | null;
 };
 
-export type Showtime = {
-    id: string;
-    start_time: string;
-    end_time: string;
-    base_price: string;
+export type MovieCreateDTO = {
+    title: string;
+    description: string;
+    poster_url: string;
+    backdrop_url: string;
+    duration_minutes: number;
+    age_rating: number;
+    release_date: string;
     status: string;
-    screen_id: string;
+    genre_ids: string[];
 };
 
+export type MovieUpdateDTO = Partial<MovieCreateDTO>;
+
+// Export MovieCreateForm type cleanly from schemas without importing runtime zod here
+export type { MovieCreateForm } from "../schemas/moviesSchemes";
+
+// ==========================================
+// Theater & Screen Types
+// ==========================================
 export type Screen = {
     id: string;
     name: string;
@@ -54,6 +74,21 @@ export type Theater = {
     screens: Screen[];
 };
 
+// ==========================================
+// Showtime Types
+// ==========================================
+export type Showtime = {
+    id: string;
+    start_time: string;
+    end_time: string;
+    base_price: string;
+    status: string;
+    screen_id: string;
+};
+
+// ==========================================
+// Basket & Context Types
+// ==========================================
 export type BasketItem = {
     id: string;
     movieId: string;
@@ -77,20 +112,9 @@ export type BasketContextType = {
     clearBasket: () => void;
 };
 
-export type MovieCreateDTO = {
-    title: string;
-    description: string;
-    poster_url: string;
-    backdrop_url: string;
-    duration_minutes: number;
-    age_rating: number;
-    release_date: string;
-    status: string;
-    genre_ids: string[];
-};
-
-export type MovieUpdateDTO = Partial<MovieCreateDTO>;
-
+// ==========================================
+// Receipt & Billing Types
+// ==========================================
 export type ReceiptItem = {
     id: string;
     moviePosterUrl: string;

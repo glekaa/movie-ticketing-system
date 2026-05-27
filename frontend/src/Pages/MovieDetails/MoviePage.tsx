@@ -35,7 +35,7 @@ const MoviePage = () => {
     }
 
     return (
-        <div className="min-h-screen text-white">
+        <main className="min-h-screen text-white">
             <MovieHero movie={movie} />
 
             <div className="max-w-7xl mx-auto px-6 md:px-10 py-12 grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -46,11 +46,11 @@ const MoviePage = () => {
                 </div>
 
                 {/* Right Column: Showtime Selector */}
-                <div className="lg:col-span-1">
+                <aside className="lg:col-span-1">
                     <Showtimes movieId={id!} />
-                </div>
+                </aside>
             </div>
-        </div>
+        </main>
     )
 }
 

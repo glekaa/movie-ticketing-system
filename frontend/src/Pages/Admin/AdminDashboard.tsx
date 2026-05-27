@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import AdminDashboardCard from "../../components/Admin/AdminDashboardCard";
-import LoadingState from "../../components/LayoutElements/LoadingState";
-import ErrorState from "../../components/LayoutElements/ErrorState";
 import movieServices from "../../services/movieServices"
 import theaterServices from "../../services/theaterServices";
 import type { Movie, Theater } from "../../types";
@@ -108,12 +106,12 @@ const AdminDashboard = () => {
 
     return (
         <main className="flex-1 px-4 md:px-8 py-8 text-white max-w-7xl mx-auto w-full animate-fade-in">
-            <header className="mb-10">
+            <div className="mb-10">
                 <h2 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 tracking-tight">
                     Welcome, Admin
                 </h2>
                 <p className="text-gray-400 mt-2">Here's an overview of your ticketing system today.</p>
-            </header>
+            </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-8">
                 {dashboardCards.map((card) => (

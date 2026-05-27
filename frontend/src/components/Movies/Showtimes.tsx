@@ -156,7 +156,7 @@ const Showtimes = ({ movieId }: ShowtimesProps) => {
     const currentTheatersMap = selectedDate ? showtimesByDateAndTheater[selectedDate] : {};
 
     return (
-        <div className="bg-[#141313] rounded-2xl p-6 border border-white/5 sticky top-24">
+        <section className="bg-[#141313] rounded-2xl p-6 border border-white/5 sticky top-24">
             <h2 className="text-xl font-bold mb-6 text-[#E5E2E1]">Select Showtime</h2>
 
             {/* Dates */}
@@ -269,7 +269,7 @@ const Showtimes = ({ movieId }: ShowtimesProps) => {
                     ? `Add ${ticketCount} Ticket${ticketCount > 1 ? 's' : ''} to Basket`
                     : "Select a Showtime"}
             </Button>
-        </div>
+        </section>
     );
 };
 

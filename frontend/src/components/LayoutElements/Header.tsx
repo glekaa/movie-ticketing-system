@@ -20,7 +20,7 @@ const Header = () => {
   return (
     <header className="relative w-full px-4 md:px-8 h-18 flex items-center justify-between">
       <div className="flex-shrink-0 w-32">
-        <span className="text-3xl font-bold text-gray-300 tracking-tighter">absolute</span>
+        <h1 onClick={() => navigate("/")} className="text-3xl font-bold text-gray-300 tracking-tighter cursor-pointer hover:text-white">absolute</h1>
       </div>
       <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2 bg-[#222222] rounded-full p-1.5 border border-white/5 shadow-lg">
         {NAV_TABS.map((tab) => (

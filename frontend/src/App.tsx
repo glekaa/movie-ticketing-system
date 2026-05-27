@@ -13,6 +13,8 @@ const NotFound = lazy(() => import("./Pages/NotFound/NotFound"));
 const AdminDashboard = lazy(() => import("./Pages/Admin/AdminDashboard"));
 const MovieTable = lazy(() => import("./Pages/Admin/MoviesTable"));
 const MovieDetails = lazy(() => import("./Pages/Admin/MovieDetails"));
+const MovieCreate = lazy(() => import("./Pages/Admin/MovieCreate"));
+const MovieEdit = lazy(() => import("./Pages/Admin/MovieEdit"));
 
 const LayoutWrapper = () => (
   <Layout>
@@ -51,6 +53,8 @@ const App = () => {
             <Route index element={<AdminDashboard />} />
             <Route path="movies-management" element={<MovieTable />} />
             <Route path="movies-management/:id" element={<MovieDetails />} />
+            <Route path="movies-management/:id/edit" element={<MovieEdit />} />
+            <Route path="movies-management/create" element={<MovieCreate />} />
             <Route path="*" element={<AdminDashboard />} />
           </Route>
         </Routes>
