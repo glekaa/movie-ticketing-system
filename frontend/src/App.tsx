@@ -15,6 +15,7 @@ const AllMovies = lazy(() => import("./Pages/AllMovies/AllMovies"));
 const SeatSelection = lazy(() => import("./Pages/SeatSelection/SeatSelection"));
 const BasketPage = lazy(() => import("./Pages/Basket/BasketPage"));
 const NotFound = lazy(() => import("./Pages/NotFound/NotFound"));
+const Cinemas = lazy(() => import("./Pages/Cinemas/Cinemas"));
 const AdminDashboard = lazy(() => import("./Pages/Admin/AdminDashboard"));
 const MovieTable = lazy(() => import("./Pages/Admin/MoviesTable"));
 const TheatersTable = lazy(() => import("./Pages/Admin/TheatersTable"));
@@ -72,7 +73,7 @@ const App = () => {
           <Route element={<LayoutWrapper />}>
             <Route path="/" index element={<Movies status="now_showing" />} />
             <Route path="/coming-soon" element={<Movies status="coming_soon" />} />
-            <Route path="/cinemas" element={<div>Cinemas</div>} />
+            <Route path="/cinemas" element={<Cinemas />} />
             <Route path="/movie/:id" element={<MoviePage />} />
             <Route path="/movie/:id/seats/" element={<SeatSelection />} />
             <Route path="/movies" element={<AllMovies />} />
