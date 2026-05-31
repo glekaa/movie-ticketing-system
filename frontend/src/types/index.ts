@@ -114,6 +114,8 @@ export type BasketItem = {
     quantity: number;
     ticketPrice: number;
     totalPrice: number;
+    seats?: string[];
+    expiresAt?: number;
 };
 
 export type BasketContextType = {
@@ -148,3 +150,17 @@ export type ReceiptData = {
     totalBookingFee: number;
     grandTotal: number;
 };
+
+// ==========================================
+// Auth
+// ==========================================
+
+export type User = {
+    email: string;
+    username: string;
+    id: string;
+    role: string;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string;
+}

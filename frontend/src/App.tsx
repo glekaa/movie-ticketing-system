@@ -1,9 +1,13 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import Layout from "./Layout/Layout";
 import AdminLayout from "./Layout/AdminLayout"
 import { Routes, Route, Outlet } from "react-router";
 import LoadingState from "./components/LayoutElements/LoadingState";
 import { BasketProvider } from "./context/BasketContext";
+import PrivateRoute from "./components/Routes/PrivateRoute";
+import axios from "axios";
+import api from "./services/api";
+import useAuthStore from "./stores/authStore";
 
 const Movies = lazy(() => import("./Pages/MoviesMain/Movies"));
 const MoviePage = lazy(() => import("./Pages/MovieDetails/MoviePage"));
@@ -32,6 +36,29 @@ const AdminLayoutWrapper = () => (
 )
 
 const App = () => {
+  useEffect(() => {
+    const initializeAuth = async () => {
+      try {
+        const response = await axios.post(
+          "/api/v1/auth/refresh",
+          {},
+          { withCredentials: true }
+        );
+        const { access_token } = response.data;
+
+        useAuthStore.setState({ token: access_token });
+
+        const userRes = await api.get("/auth/me");
+
+        useAuthStore.getState().login(userRes.data, access_token);
+      } catch (err) {
+        useAuthStore.setState({ isInitialized: true });
+      }
+    };
+
+    initializeAuth();
+  }, []);
+
   return (
     <BasketProvider>
       <Suspense
@@ -53,15 +80,17 @@ const App = () => {
             <Route path="*" element={<NotFound />} />
           </Route>
 
-          <Route path="/admin" element={<AdminLayoutWrapper />}>
-            <Route index element={<AdminDashboard />} />
-            <Route path="movies-management" element={<MovieTable />} />
-            <Route path="theaters-management" element={<TheatersTable />} />
-            <Route path="movies-management/:id" element={<MovieDetails />} />
-            <Route path="movies-management/:id/edit" element={<MovieEdit />} />
-            <Route path="movies-management/create" element={<MovieCreate />} />
-            <Route path="movies-management/:id/showtime/create" element={<ShowtimeCreate />} />
-            <Route path="*" element={<AdminDashboard />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/admin" element={<AdminLayoutWrapper />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="movies-management" element={<MovieTable />} />
+              <Route path="theaters-management" element={<TheatersTable />} />
+              <Route path="movies-management/:id" element={<MovieDetails />} />
+              <Route path="movies-management/:id/edit" element={<MovieEdit />} />
+              <Route path="movies-management/create" element={<MovieCreate />} />
+              <Route path="movies-management/:id/showtime/create" element={<ShowtimeCreate />} />
+              <Route path="*" element={<AdminDashboard />} />
+            </Route>
           </Route>
         </Routes>
       </Suspense>

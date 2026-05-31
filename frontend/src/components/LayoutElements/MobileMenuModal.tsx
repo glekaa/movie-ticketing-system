@@ -1,6 +1,8 @@
 import { NAV_TABS } from "../../constants/navigation";
 import { useNavigate, useLocation } from "react-router";
 import { X, ChevronRight } from "lucide-react";
+import useAuthStore from "../../stores/authStore";
+import Button from "../Elements/Button";
 
 interface MobileMenuModalProps {
     toggleMenu: () => void;
@@ -9,6 +11,7 @@ interface MobileMenuModalProps {
 const MobileMenuModal = ({ toggleMenu }: MobileMenuModalProps) => {
     const navigate = useNavigate();
     const { pathname } = useLocation();
+    const { token, user, logout } = useAuthStore();
 
     return (
         <>
@@ -49,8 +52,42 @@ const MobileMenuModal = ({ toggleMenu }: MobileMenuModalProps) => {
                     })}
                 </nav>
 
-                <div className="mt-auto px-6 py-6 border-t border-white/5">
-                    <p className="text-xs text-gray-600 font-['Inter']">© 2026 absolute</p>
+                <div className="mt-auto px-6 py-6 border-t border-white/5 space-y-3.5">
+                    {token ? (
+                        <div className="space-y-3">
+                            <p className="text-xs text-gray-400 font-['Inter']">
+                                Logged in as <strong className="text-white font-semibold">{user?.username}</strong>
+                            </p>
+                            <Button
+                                variant="secondary"
+                                className="w-full py-2.5 text-xs font-semibold"
+                                onClick={() => {
+                                    toggleMenu();
+                                    logout();
+                                    navigate("/");
+                                }}
+                            >
+                                Sign Out
+                            </Button>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-2 gap-3">
+                            <button
+                                onClick={() => { toggleMenu(); navigate("/auth/login"); }}
+                                className="text-xs font-semibold py-2.5 rounded-full border border-white/10 hover:bg-white/5 text-gray-300 hover:text-white transition-all cursor-pointer text-center font-['Montserrat']"
+                            >
+                                Sign In
+                            </button>
+                            <Button
+                                variant="secondary"
+                                className="py-2.5 text-xs font-semibold"
+                                onClick={() => { toggleMenu(); navigate("/auth/register"); }}
+                            >
+                                Sign Up
+                            </Button>
+                        </div>
+                    )}
+                    <p className="text-[10px] text-gray-600 font-['Inter'] pt-2">© 2026 absolute</p>
                 </div>
             </div>
         </>

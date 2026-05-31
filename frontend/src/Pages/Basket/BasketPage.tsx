@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useBasket } from "../../context/BasketContext";
 import { ArrowLeft, Ticket } from "lucide-react";
@@ -6,14 +6,24 @@ import EmptyBasketState from "../../components/Basket/EmptyBasketState";
 import ReceiptView from "../../components/Basket/ReceiptView";
 import BasketItemCard from "../../components/Basket/BasketItemCard";
 import CheckoutForm from "../../components/Basket/CheckoutForm";
+import useAuthStore from "../../stores/authStore";
 
 const BasketPage = () => {
     const navigate = useNavigate();
     const { basket, updateQuantity, removeFromBasket, clearBasket } = useBasket();
+    const user = useAuthStore((state) => state.user);
 
     // Form and Checkout States
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
+    const [name, setName] = useState(user?.username || "");
+    const [email, setEmail] = useState(user?.email || "");
+
+    useEffect(() => {
+        if (user) {
+            if (!name) setName(user.username || "");
+            if (!email) setEmail(user.email || "");
+        }
+    }, [user]);
+
     const [formErrors, setFormErrors] = useState<{ name?: string; email?: string }>({});
     const [isCheckingOut, setIsCheckingOut] = useState(false);
     const [showReceipt, setShowReceipt] = useState(false);
