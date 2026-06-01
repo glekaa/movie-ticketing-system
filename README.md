@@ -1,12 +1,13 @@
-# Movie Ticketing System - Frontend
+# Movie Ticketing System 
 
 A modern, type-safe, highly interactive movie ticketing web application featuring real-time seat reservations, session holding logic, dynamic cinema/movie catalog filtering, and a powerful administrative backend portal.
 
 The application is built using a mobile-first design, ensuring premium responsiveness and usability across all screen sizes, from small mobile viewports to large desktop monitors.
 
 ---
+## Frontend
 
-## Core Strengths
+### Core Strengths
 
 * **Mobile-First & Adaptive Design:** Custom fluid grids and responsive components adapt ideally to viewports ranging from small mobiles (under 400px) to ultra-wide displays. Incorporates swipeable horizontal lists and sticky navigation headers to optimize mobile interaction.
 * **Precise Reservation State Protection:** Implements transactional safety for seat reservations. Selecting seats locks them with a 5-minute session countdown timer, preventing double bookings. Direct basket manipulations are disabled to prevent seat and checkout ticket mismatches.
@@ -15,7 +16,7 @@ The application is built using a mobile-first design, ensuring premium responsiv
 
 ---
 
-## Frontend Technology Stack
+### Technology Stack
 
 * **React 19:** Component-based UI rendering.
 * **TypeScript:** Static type verification.
@@ -29,9 +30,9 @@ The application is built using a mobile-first design, ensuring premium responsiv
 
 ---
 
-## Project Structure & Views
+### Project Structure & Views
 
-### User Portal
+#### User Portal
 
 * **Home (`/` & `/coming-soon`):** Interactive lists of "Now Showing" and "Coming Soon" movies, displaying details, formatting tags, and responsive swipe controls.
 * **Cinemas (`/cinemas`):** Unified cinemas directory offering format selection and city-based filtering.
@@ -40,7 +41,7 @@ The application is built using a mobile-first design, ensuring premium responsiv
 * **Seat Selection (`/movie/:id/seats`):** Visual seat selection grid displaying occupied, selected, and available seats, coupled with a 5-minute lock timer.
 * **Ticket Basket (`/basket`):** Shopping basket showing reserved tickets with active countdown timers. Features checkout workflows with validation schemas.
 
-### Admin Portal (Protected)
+#### Admin Portal (Protected)
 
 * **Admin Dashboard (`/admin`):** Analytical dashboard providing overview metrics for administrators.
 * **Movie Management (`/admin/movies-management`):** Tables to list, create, edit, or delete movie catalog items.
@@ -50,7 +51,7 @@ The application is built using a mobile-first design, ensuring premium responsiv
 
 ---
 
-## Backend Infrastructure (Architecture Overview)
+## Backend 
 
 The frontend communicates with a containerized, event-driven microservices backend designed with a focus on high throughput and decoupling.
 
