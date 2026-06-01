@@ -84,19 +84,19 @@ const App = () => {
           </Route>
           <Route path="/auth/login" element={<Auth mode="login" />} />
           <Route path="/auth/register" element={<Auth mode="register" />} />
-          {/* <Route element={<PrivateRoute />}> */}
-          <Route path="/admin" element={<AdminLayoutWrapper />}>
-            <Route index element={<AdminDashboard />} />
-            <Route path="movies-management" element={<MovieTable />} />
-            <Route path="theaters-management" element={<TheatersTable />} />
-            <Route path="genres" element={<GenresTable />} />
-            <Route path="movies-management/:id" element={<MovieDetails />} />
-            <Route path="movies-management/:id/edit" element={<MovieEdit />} />
-            <Route path="movies-management/create" element={<MovieCreate />} />
-            <Route path="movies-management/:id/showtime/create" element={<ShowtimeCreate />} />
-            <Route path="*" element={<AdminDashboard />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/admin" element={<AdminLayoutWrapper />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="movies-management" element={<MovieTable />} />
+              <Route path="theaters-management" element={<TheatersTable />} />
+              <Route path="genres" element={<GenresTable />} />
+              <Route path="movies-management/:id" element={<MovieDetails />} />
+              <Route path="movies-management/:id/edit" element={<MovieEdit />} />
+              <Route path="movies-management/create" element={<MovieCreate />} />
+              <Route path="movies-management/:id/showtime/create" element={<ShowtimeCreate />} />
+              <Route path="*" element={<AdminDashboard />} />
+            </Route>
           </Route>
-          {/* </Route> */}
         </Routes>
       </Suspense>
     </BasketProvider>
