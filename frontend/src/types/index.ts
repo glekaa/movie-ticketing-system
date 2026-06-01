@@ -7,6 +7,13 @@ export type Genre = {
     slug: string;
 };
 
+export type GenreCreateDTO = {
+    name: string;
+    slug: string;
+};
+
+export type { GenreCreateForm } from "../schemas/genresSchemas";
+
 // ==========================================
 // Person (Cast / Crew) Types
 // ==========================================
@@ -54,7 +61,6 @@ export type MovieCreateDTO = {
 
 export type MovieUpdateDTO = Partial<MovieCreateDTO>;
 
-// Export MovieCreateForm type cleanly from schemas without importing runtime zod here
 export type { MovieCreateForm } from "../schemas/moviesSchemes";
 
 // ==========================================
@@ -75,6 +81,21 @@ export type Theater = {
     location: string;
     screens: Screen[];
 };
+
+export type TheaterCreateDTO = {
+    name: string;
+    location: string;
+};
+
+export type TheaterUpdateDTO = Partial<TheaterCreateDTO>;
+
+export type ScreenCreateDTO = {
+    name: string;
+    total_rows: number;
+    seats_per_row: number;
+};
+
+export type { TheaterCreateForm, ScreenCreateForm } from "../schemas/theatersSchemas";
 
 // ==========================================
 // Showtime Types
@@ -151,6 +172,8 @@ export type ReceiptData = {
     grandTotal: number;
 };
 
+export type { CheckoutFormValues } from "../schemas/checkoutSchemas";
+
 // ==========================================
 // Auth
 // ==========================================
@@ -163,4 +186,6 @@ export type User = {
     is_active: boolean;
     created_at: string;
     updated_at: string;
-}
+};
+
+export type { RegisterFormValues, LoginFormValues } from "../schemas/authSchemas";

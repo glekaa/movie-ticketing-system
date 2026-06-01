@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
 
 interface AdminTabsProps {
-    activeTab: "movies" | "theaters";
+    activeTab: "movies" | "theaters" | "genres";
 }
 
 export const AdminTabs = ({ activeTab }: AdminTabsProps) => {
@@ -28,6 +28,16 @@ export const AdminTabs = ({ activeTab }: AdminTabsProps) => {
                 }`}
             >
                 Theaters
+            </button>
+            <button
+                onClick={() => navigate("/admin/genres")}
+                className={`pb-3 text-sm font-semibold uppercase tracking-wider border-b-2 cursor-pointer transition-all ${
+                    activeTab === "genres"
+                        ? "border-blue-500 text-blue-400"
+                        : "border-transparent text-gray-500 hover:text-gray-300"
+                }`}
+            >
+                Genres
             </button>
         </div>
     );

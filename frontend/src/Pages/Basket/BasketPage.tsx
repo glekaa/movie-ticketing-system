@@ -7,29 +7,42 @@ import ReceiptView from "../../components/Basket/ReceiptView";
 import BasketItemCard from "../../components/Basket/BasketItemCard";
 import CheckoutForm from "../../components/Basket/CheckoutForm";
 import useAuthStore from "../../stores/authStore";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { checkoutSchema } from "../../schemas/checkoutSchemas";
+import type { CheckoutFormValues } from "../../types";
 
 const BasketPage = () => {
     const navigate = useNavigate();
     const { basket, updateQuantity, removeFromBasket, clearBasket } = useBasket();
     const user = useAuthStore((state) => state.user);
 
-    // Form and Checkout States
-    const [name, setName] = useState(user?.username || "");
-    const [email, setEmail] = useState(user?.email || "");
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors }
+    } = useForm<CheckoutFormValues>({
+        resolver: zodResolver(checkoutSchema),
+        defaultValues: {
+            name: user?.username || "",
+            email: user?.email || ""
+        }
+    });
 
     useEffect(() => {
         if (user) {
-            if (!name) setName(user.username || "");
-            if (!email) setEmail(user.email || "");
+            reset({
+                name: user.username || "",
+                email: user.email || ""
+            });
         }
-    }, [user]);
+    }, [user, reset]);
 
-    const [formErrors, setFormErrors] = useState<{ name?: string; email?: string }>({});
     const [isCheckingOut, setIsCheckingOut] = useState(false);
     const [showReceipt, setShowReceipt] = useState(false);
     const [receiptData, setReceiptData] = useState<any>(null);
 
-    // Calculate totals
     const ticketSubtotal = basket.reduce((acc, item) => acc + item.totalPrice, 0);
     const bookingFeePerTicket = 1.50;
     const totalTicketsCount = basket.reduce((acc, item) => acc + item.quantity, 0);
@@ -44,30 +57,14 @@ const BasketPage = () => {
         removeFromBasket(itemId);
     };
 
-    const validateForm = () => {
-        const errors: { name?: string; email?: string } = {};
-        if (!name.trim()) errors.name = "Name is required";
-        if (!email.trim()) {
-            errors.email = "Email is required";
-        } else if (!/\S+@\S+\.\S+/.test(email)) {
-            errors.email = "Please enter a valid email address";
-        }
-        setFormErrors(errors);
-        return Object.keys(errors).length === 0;
-    };
-
-    const handleCheckout = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!validateForm()) return;
-
+    const handleCheckoutSubmit = (data: CheckoutFormValues) => {
         setIsCheckingOut(true);
 
-        // Simulate API payment/booking request
         setTimeout(() => {
             setIsCheckingOut(false);
             setReceiptData({
-                customerName: name,
-                customerEmail: email,
+                customerName: data.name,
+                customerEmail: data.email,
                 items: [...basket],
                 ticketSubtotal,
                 totalBookingFee,
@@ -85,12 +82,10 @@ const BasketPage = () => {
         }, 1500);
     };
 
-    // If checkout is successful, show receipt view
     if (showReceipt && receiptData) {
         return <ReceiptView receiptData={receiptData} />;
     }
 
-    // If basket is empty, show empty state
     if (basket.length === 0) {
         return <EmptyBasketState />;
     }
@@ -111,10 +106,7 @@ const BasketPage = () => {
                 </div>
             </div>
 
-            {/* Grid layout */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-
-                {/* Left side: Basket items */}
                 <section className="lg:col-span-2 space-y-4">
                     {basket.map((item) => (
                         <BasketItemCard
@@ -126,17 +118,11 @@ const BasketPage = () => {
                     ))}
                 </section>
 
-                {/* Right side: Summary & Checkout Form */}
                 <aside className="space-y-6">
-
-                    {/* Checkout Card */}
                     <CheckoutForm
-                        name={name}
-                        setName={setName}
-                        email={email}
-                        setEmail={setEmail}
-                        formErrors={formErrors}
-                        handleCheckout={handleCheckout}
+                        register={register}
+                        errors={errors}
+                        onSubmit={handleSubmit(handleCheckoutSubmit)}
                         isCheckingOut={isCheckingOut}
                         ticketSubtotal={ticketSubtotal}
                         bookingFeePerTicket={bookingFeePerTicket}
@@ -144,7 +130,6 @@ const BasketPage = () => {
                         grandTotal={grandTotal}
                     />
 
-                    {/* Booking Guarantee Callout */}
                     <div className="bg-[#1a1919] border border-[#00A3FF]/10 rounded-2xl p-4 flex gap-3 text-xs text-gray-400">
                         <Ticket className="w-5 h-5 text-[#00A3FF] shrink-0 mt-0.5" />
                         <div>

@@ -4,10 +4,10 @@ import AdminLayout from "./Layout/AdminLayout"
 import { Routes, Route, Outlet } from "react-router";
 import LoadingState from "./components/LayoutElements/LoadingState";
 import { BasketProvider } from "./context/BasketContext";
-import PrivateRoute from "./components/Routes/PrivateRoute";
 import axios from "axios";
 import api from "./services/api";
 import useAuthStore from "./stores/authStore";
+import PrivateRoute from "./components/Routes/PrivateRoute";
 
 const Movies = lazy(() => import("./Pages/MoviesMain/Movies"));
 const MoviePage = lazy(() => import("./Pages/MovieDetails/MoviePage"));
@@ -23,6 +23,8 @@ const MovieDetails = lazy(() => import("./Pages/Admin/MovieDetails"));
 const MovieCreate = lazy(() => import("./Pages/Admin/MovieCreate"));
 const MovieEdit = lazy(() => import("./Pages/Admin/MovieEdit"));
 const ShowtimeCreate = lazy(() => import("./Pages/Admin/ShowtimeCreate"));
+const GenresTable = lazy(() => import("./Pages/Admin/GenresTable"));
+const Auth = lazy(() => import("./Pages/Auth/Auth"))
 
 const LayoutWrapper = () => (
   <Layout>
@@ -80,12 +82,14 @@ const App = () => {
             <Route path="/basket" element={<BasketPage />} />
             <Route path="*" element={<NotFound />} />
           </Route>
-
+          <Route path="/auth/login" element={<Auth mode="login" />} />
+          <Route path="/auth/register" element={<Auth mode="register" />} />
           <Route element={<PrivateRoute />}>
             <Route path="/admin" element={<AdminLayoutWrapper />}>
               <Route index element={<AdminDashboard />} />
               <Route path="movies-management" element={<MovieTable />} />
               <Route path="theaters-management" element={<TheatersTable />} />
+              <Route path="genres" element={<GenresTable />} />
               <Route path="movies-management/:id" element={<MovieDetails />} />
               <Route path="movies-management/:id/edit" element={<MovieEdit />} />
               <Route path="movies-management/create" element={<MovieCreate />} />

@@ -6,16 +6,14 @@ interface CinemaCardProps {
 }
 
 const CinemaCard = ({ cinema }: CinemaCardProps) => {
-  // Check screen formats based on their names
-  const hasIMAX = cinema.screens.some((s) => s.name.toLowerCase().includes("imax"));
-  const hasLaser = cinema.screens.some((s) => s.name.toLowerCase().includes("laser"));
+  const screens = cinema.screens || [];
+  const hasIMAX = screens.some((s) => s.name?.toLowerCase().includes("imax"));
+  const hasLaser = screens.some((s) => s.name?.toLowerCase().includes("laser"));
 
   return (
     <article
-      className="group relative flex flex-col md:flex-row md:items-center justify-between p-6 rounded-2xl border transition-all duration-300 bg-[#151414] border-white/5 hover:border-white/10 hover:bg-[#181717] w-full"
+      className="group relative flex flex-col md:flex-row md:items-center justify-between p-6 rounded-2xl border transition-all duration-300 bg-[#151414] border-white/5 w-full"
     >
-      {/* Decorative vertical bar on hover */}
-      <div className="absolute left-0 top-0 bottom-0 w-[4px] rounded-l bg-transparent group-hover:bg-[#00A3FF] transition-all duration-300" />
 
       {/* Left section: Details */}
       <div className="flex items-start gap-4 flex-1 min-w-0">
@@ -51,16 +49,10 @@ const CinemaCard = ({ cinema }: CinemaCardProps) => {
         )}
       </div>
 
-      {/* Right section: Screen details & Action indicator */}
-      <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center border-t border-white/5 md:border-none pt-4 md:pt-0 mt-4 md:mt-0 gap-2 shrink-0">
-        <div className="flex items-center gap-1.5 text-xs text-gray-400">
-          <Film className="w-4 h-4 text-gray-500" />
-          <span>
-            {cinema.screens.length} {cinema.screens.length === 1 ? "Screen" : "Screens"} Available
-          </span>
-        </div>
-        <span className="hidden md:inline-block text-xs font-semibold text-gray-500 group-hover:text-white group-hover:translate-x-1 transition-all duration-300">
-          Details →
+      <div className="flex items-center gap-1.5 text-xs text-gray-400 mt-4 md:mt-0 shrink-0">
+        <Film className="w-4 h-4 text-gray-500" />
+        <span>
+          {screens.length} {screens.length === 1 ? "Screen" : "Screens"} Available
         </span>
       </div>
     </article>

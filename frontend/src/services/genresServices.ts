@@ -1,5 +1,5 @@
 import api from "./api";
-import type { Genre } from "../types";
+import type { Genre, GenreCreateDTO } from "../types";
 
 const genresServices = {
     async getAllGenres() {
@@ -8,15 +8,10 @@ const genresServices = {
         });
         return response.data;
     },
-    async createGenre(data: { name: string }) {
+    async createGenre(data: GenreCreateDTO) {
         const response = await api.post("/genres/", data);
         return response.data;
-    },
-    async deleteGenre(id: string) {
-        const response = await api.delete(`/genres/${id}`);
-        return response.data;
-    },
-
+    }
 };
 
 export default genresServices;

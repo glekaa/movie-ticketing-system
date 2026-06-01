@@ -5,6 +5,7 @@ import AdminDashboardCard from "../../components/Admin/AdminDashboardCard";
 import movieServices from "../../services/movieServices"
 import theaterServices from "../../services/theaterServices";
 import type { Movie, Theater } from "../../types";
+import Button from "../../components/Elements/Button";
 
 const DASHBOARD_CARDS = [
     {
@@ -24,16 +25,6 @@ const DASHBOARD_CARDS = [
             { label: "Total Seating Capacity", value: 0 },
         ],
         buttonText: "Go to Theaters Table"
-    },
-    {
-        title: "Sales & Analytics",
-        stats: [
-            { label: "Today's Revenue", value: 0 },
-            { label: "Bookings Count", value: 0 },
-            { label: "Best Selling Movie", value: "N/A" },
-            { label: "Best Selling Theater", value: "N/A" },
-        ],
-        buttonText: "Go to Sales & Analytics Table"
     }
 ];
 
@@ -104,7 +95,7 @@ const AdminDashboard = () => {
                 <p className="text-gray-400 mt-2">Here's an overview of your ticketing system today.</p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-8 mb-8">
                 {dashboardCards.map((card) => (
                     <AdminDashboardCard
                         key={card.title}
@@ -114,6 +105,11 @@ const AdminDashboard = () => {
                         onButtonClick={() => { navigate('/admin/' + card.title.toLowerCase().replace(/ /g, '-')) }}
                     />
                 ))}
+            </div>
+            <div className="flex justify-end gap-4">
+                <Button variant="secondary" onClick={() => { navigate('/admin/genres') }}>
+                    Go To Genres
+                </Button>
             </div>
         </main>
     )

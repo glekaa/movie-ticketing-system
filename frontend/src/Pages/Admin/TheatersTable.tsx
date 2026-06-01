@@ -1,15 +1,18 @@
 import { useState, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import theaterServices from "../../services/theaterServices";
-import type { Theater } from "../../types";
+import type { Theater, TheaterCreateDTO, TheaterUpdateDTO, ScreenCreateDTO } from "../../types";
 import { FilterIcon, PlusIcon, Building2 } from "lucide-react";
 import Button from "../../components/Elements/Button";
 import SearchInput from "../../components/Filter/SearchInput";
 import FilterDropdown from "../../components/Filter/FilterDropdown";
 import TheatersStats from "../../components/Admin/Theaters/TheatersStats";
 import TheatersTableList from "../../components/Admin/Theaters/TheatersTableList";
-import TheatersModals from "../../components/Admin/Theaters/TheatersModals";
+import AddScreenModal from "../../components/Admin/Theaters/AddScreenModal";
+import AddTheaterModal from "../../components/Admin/Theaters/AddTheaterModal";
+import EditTheaterModal from "../../components/Admin/Theaters/EditTheaterModal";
 import AdminTabs from "../../components/Admin/AdminTabs";
+import { getCityFromLocation } from "../../utils";
 
 const TheatersTable = () => {
     const queryClient = useQueryClient();
@@ -17,24 +20,20 @@ const TheatersTable = () => {
     const [search, setSearch] = useState("");
     const [activeLocation, setActiveLocation] = useState("all");
 
-    // Modal states
     const [addScreenTheater, setAddScreenTheater] = useState<Theater | null>(null);
     const [showAddTheaterModal, setShowAddTheaterModal] = useState(false);
     const [editTheater, setEditTheater] = useState<Theater | null>(null);
 
-    // Error states
     const [screenError, setScreenError] = useState("");
     const [theaterError, setTheaterError] = useState("");
 
-    // Fetch Theaters
     const { data: theaters, isLoading } = useQuery<Theater[]>({
         queryKey: ["theaters"],
         queryFn: () => theaterServices.getAllTheaters(),
     });
 
-    // Mutations
     const createTheaterMutation = useMutation({
-        mutationFn: (data: { name: string; location: string }) => theaterServices.createTheater(data),
+        mutationFn: (data: TheaterCreateDTO) => theaterServices.createTheater(data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["theaters"] });
             setShowAddTheaterModal(false);
@@ -46,7 +45,7 @@ const TheatersTable = () => {
     });
 
     const updateTheaterMutation = useMutation({
-        mutationFn: ({ id, data }: { id: string; data: { name: string; location: string } }) =>
+        mutationFn: ({ id, data }: { id: string; data: TheaterUpdateDTO }) =>
             theaterServices.updateTheater(id, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["theaters"] });
@@ -59,7 +58,7 @@ const TheatersTable = () => {
     });
 
     const createScreenMutation = useMutation({
-        mutationFn: ({ theaterId, data }: { theaterId: string; data: { name: string; total_rows: number; seats_per_row: number } }) =>
+        mutationFn: ({ theaterId, data }: { theaterId: string; data: ScreenCreateDTO }) =>
             theaterServices.createScreen(theaterId, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["theaters"] });
@@ -71,14 +70,12 @@ const TheatersTable = () => {
         }
     });
 
-    // Extract unique locations for the filter
     const locations = useMemo(() => {
         if (!theaters) return [];
-        const unique = new Set(theaters.map(t => t.location));
+        const unique = new Set(theaters.map(t => getCityFromLocation(t.location)));
         return Array.from(unique).sort();
     }, [theaters]);
 
-    // Build location options for the FilterDropdown
     const locationOptions = useMemo(() => {
         const list = [{ label: "All Locations", value: "all" }];
         locations.forEach(loc => {
@@ -87,7 +84,6 @@ const TheatersTable = () => {
         return list;
     }, [locations]);
 
-    // Filter and search
     const filteredTheaters = useMemo(() => {
         if (!theaters) return [];
         return theaters.filter(t => {
@@ -98,7 +94,6 @@ const TheatersTable = () => {
         });
     }, [theaters, search, activeLocation]);
 
-    // Statistics
     const stats = useMemo(() => {
         if (!theaters) return { totalTheaters: 0, totalScreens: 0, totalCapacity: 0 };
         const totalTheaters = theaters.length;
@@ -109,38 +104,20 @@ const TheatersTable = () => {
         return { totalTheaters, totalScreens, totalCapacity };
     }, [theaters]);
 
-    // Action execution wrappers with client-side validation
-    const handleCreateScreen = (theaterId: string, data: { name: string; total_rows: number; seats_per_row: number }) => {
-        if (!data.name.trim()) {
-            setScreenError("Screen name is required.");
-            return;
-        }
-        if (data.total_rows <= 0 || data.seats_per_row <= 0) {
-            setScreenError("Rows and Seats per row must be positive numbers.");
-            return;
-        }
+    const handleCreateScreen = (theaterId: string, data: ScreenCreateDTO) => {
         createScreenMutation.mutate({ theaterId, data });
     };
 
-    const handleCreateTheater = (data: { name: string; location: string }) => {
-        if (!data.name.trim() || !data.location.trim()) {
-            setTheaterError("All fields are required.");
-            return;
-        }
+    const handleCreateTheater = (data: TheaterCreateDTO) => {
         createTheaterMutation.mutate(data);
     };
 
-    const handleUpdateTheater = (theaterId: string, data: { name: string; location: string }) => {
-        if (!data.name.trim() || !data.location.trim()) {
-            setTheaterError("All fields are required.");
-            return;
-        }
+    const handleUpdateTheater = (theaterId: string, data: TheaterUpdateDTO) => {
         updateTheaterMutation.mutate({ id: theaterId, data });
     };
 
     return (
         <main className="flex flex-col px-4 md:px-8 flex-1">
-            {/* Tabs Navigation */}
             <AdminTabs activeTab="theaters" />
 
             <div className="sticky top-0 z-10 py-4 mb-6 mt-2 flex justify-between items-end bg-[#121111]">
@@ -166,7 +143,6 @@ const TheatersTable = () => {
             </div>
 
             <div className="flex flex-row gap-6 text-white pb-8">
-                {/* Sidebar Filter and Stats */}
                 <aside className="flex flex-col gap-6 p-6 w-64 shrink-0 h-fit bg-[#1A1A1A] border border-gray-800 rounded-xl shadow-xl">
                     <section className="space-y-4">
                         <h2 className="text-xl font-semibold text-blue-400 flex items-center gap-2">
@@ -189,7 +165,6 @@ const TheatersTable = () => {
                     />
                 </aside>
 
-                {/* Table Section */}
                 <section className="flex-1 min-w-0">
                     {isLoading ? (
                         <div className="text-gray-500 animate-pulse">Loading theaters data...</div>
@@ -209,26 +184,32 @@ const TheatersTable = () => {
                 </section>
             </div>
 
-            {/* Modals Container */}
-            <TheatersModals
-                addScreenTheater={addScreenTheater}
-                onCloseAddScreen={() => { setAddScreenTheater(null); setScreenError(""); }}
-                onCreateScreen={handleCreateScreen}
-                createScreenPending={createScreenMutation.isPending}
-                createScreenError={screenError}
+            {addScreenTheater && (
+                <AddScreenModal
+                    theater={addScreenTheater}
+                    onClose={() => { setAddScreenTheater(null); setScreenError(""); }}
+                    onSubmit={(data) => handleCreateScreen(addScreenTheater.id, data)}
+                    isPending={createScreenMutation.isPending}
+                    error={screenError}
+                />
+            )}
 
-                showAddTheaterModal={showAddTheaterModal}
-                onCloseAddTheater={() => { setShowAddTheaterModal(false); setTheaterError(""); }}
-                onCreateTheater={handleCreateTheater}
-                createTheaterPending={createTheaterMutation.isPending}
-                createTheaterError={theaterError}
-
-                editTheater={editTheater}
-                onCloseEditTheater={() => { setEditTheater(null); setTheaterError(""); }}
-                onUpdateTheater={handleUpdateTheater}
-                updateTheaterPending={updateTheaterMutation.isPending}
-                updateTheaterError={theaterError}
+            <AddTheaterModal
+                isOpen={showAddTheaterModal}
+                onClose={() => { setShowAddTheaterModal(false); setTheaterError(""); }}
+                onSubmit={handleCreateTheater}
+                isPending={createTheaterMutation.isPending}
+                error={theaterError}
             />
+
+            {editTheater && (
+                <EditTheaterModal
+                    theater={editTheater}
+                    onClose={() => { setEditTheater(null); setTheaterError(""); }}
+                    onSubmit={(data) => handleUpdateTheater(editTheater!.id, data)}
+                    isPending={updateTheaterMutation.isPending}
+                    error={theaterError}
+                />)}
         </main>
     );
 };
