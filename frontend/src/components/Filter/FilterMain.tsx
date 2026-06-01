@@ -1,9 +1,12 @@
 import { FILTER_CATEGORY_OPTIONS } from "../../constants/filter";
-import { useState } from "react";
 import FilterButton from "./FilterButton";
 
-const Filter = () => {
-    const [activeCategory, setActiveCategory] = useState("all");
+interface FilterMainProps {
+    activeCategory: string;
+    setActiveCategory: (filter: string) => void;
+}
+
+const Filter = ({ activeCategory, setActiveCategory }: FilterMainProps) => {
 
     return (
         <div className="flex flex-row gap-10">
