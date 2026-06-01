@@ -24,6 +24,8 @@ class Movie(Base):
     title: Mapped[str] = mapped_column(String(255), nullable=False)
     description: Mapped[str | None] = mapped_column(Text)
     poster_url: Mapped[str | None] = mapped_column(String(500))
+    backdrop_url: Mapped[str | None] = mapped_column(String(500))
+    age_rating: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     duration_minutes: Mapped[int] = mapped_column(Integer, nullable=False)
     release_date: Mapped[date] = mapped_column(Date, nullable=False)
     status: Mapped[MovieStatus] = mapped_column(
@@ -44,3 +46,4 @@ class Movie(Base):
     genres: Mapped[list["Genre"]] = relationship(
         "Genre", secondary="movie_genres", back_populates="movies"
     )
+    showtimes: Mapped[list["Showtime"]] = relationship(back_populates="movie")

@@ -10,4 +10,11 @@ export default defineConfig({
     tailwindcss(),
     babel({ presets: [reactCompilerPreset()] })
   ],
+  server: {
+    proxy: {
+      '/api/v1/auth/': { target: 'http://localhost:8001', changeOrigin: true },
+      '/api/v1/users/': { target: 'http://localhost:8001', changeOrigin: true },
+      '/api/v1/': { target: 'http://localhost:8002', changeOrigin: true }
+    }
+  }
 })

@@ -2,7 +2,7 @@ import uuid
 
 from sqlalchemy import String
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
 
@@ -15,3 +15,5 @@ class Theater(Base):
     )
     name: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     location: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
+
+    screens: Mapped[list["Screen"]] = relationship(back_populates="theater")
