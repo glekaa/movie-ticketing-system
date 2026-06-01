@@ -13,7 +13,7 @@ const MovieHero = ({ movie }: MovieHeroProps) => {
     const tags = buildMovieTags(movie);
 
     return (
-        <div className="relative w-full h-[80vh] overflow-hidden px-6 md:px-10 pb-20 pt-32">
+        <div className="relative w-full h-[80vh] overflow-hidden px-6 md:px-10 lg:px-16 pb-12 md:pb-20 pt-32">
             <div className="absolute inset-0"
                 style={{
                     backgroundImage: `url(${movie.backdrop_url})`,
@@ -38,7 +38,7 @@ const MovieHero = ({ movie }: MovieHeroProps) => {
                         ))}
                     </div>
 
-                    <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white tracking-wider uppercase">
+                    <h1 className="text-3xl sm:text-5xl lg:text-7xl xl:text-8xl font-bold text-white tracking-wider uppercase leading-none">
                         {movie.title}
                     </h1>
 

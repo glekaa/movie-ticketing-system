@@ -8,7 +8,7 @@ const FilterButton = ({ setValue, option, activeCategory }: FilterButtonProps) =
     return (
         <button
             onClick={() => setValue(option.value)}
-            className={`text-2xl font-extrabold cursor-pointer hover:text-white ${activeCategory === option.value ? "text-white" : "text-white/60 "}`}>
+            className={`text-sm sm:text-base md:text-lg lg:text-2xl font-extrabold cursor-pointer hover:text-white whitespace-nowrap ${activeCategory === option.value ? "text-white" : "text-white/60 "}`}>
             {option.label}
         </button>
     )

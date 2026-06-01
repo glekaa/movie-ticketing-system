@@ -9,7 +9,7 @@ const SeatButton = ({ rowLabel, colNumber, status, onClick }: SeatButtonProps) =
     const seatId = `${rowLabel}${colNumber}`;
 
     const baseStyles =
-        "text-xs font-semibold rounded-t-xl rounded-b-sm w-8 h-8 md:w-10 md:h-10 transition-all duration-200 flex items-center justify-center font-['Montserrat']";
+        "text-[10px] sm:text-xs font-semibold rounded-t-lg sm:rounded-t-xl rounded-b-sm w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 transition-all duration-200 flex items-center justify-center font-['Montserrat']";
 
     const statusStyles = {
         available:

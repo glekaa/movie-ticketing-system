@@ -68,10 +68,10 @@ const AllMovies = () => {
     const availableGenres = FILTER_GENRE_OPTIONS.filter(g => g.value !== "all");
 
     return (
-        <main className="flex flex-col px-4 md:px-8 mb-12 min-h-screen mt-8 relative">
+        <main className="flex flex-col px-4 md:px-8 lg:px-12 xl:px-16 mb-12 min-h-screen mt-8 relative">
 
             {/* Top Sticky Header: Title & Search */}
-            <div className="sticky top-0 bg-[#141313] z-40 py-6 mb-8 border-b border-white/5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div className="sticky top-0 bg-[#141313]/90 backdrop-blur-md z-40 py-3 sm:py-6 mb-8 border-b border-white/5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#E5E2E1] tracking-wide">
                     All Movies
                 </h2>
@@ -86,10 +86,10 @@ const AllMovies = () => {
             <div className="flex flex-col md:flex-row gap-8 items-start relative">
 
                 {/* Left Sidebar - Sticky Filters */}
-                <aside className="w-full md:w-64 flex-shrink-0 sticky top-32 flex flex-col gap-6 z-30">
-                    <h3 className="text-xl font-bold text-[#E5E2E1]">Filters</h3>
+                <aside className="w-full md:w-64 flex-shrink-0 md:sticky md:top-32 flex flex-col sm:flex-row sm:flex-wrap md:flex-col gap-6 z-30">
+                    <h3 className="text-xl font-bold text-[#E5E2E1] w-full">Filters</h3>
 
-                    <div className="flex flex-col gap-2 items-start">
+                    <div className="flex flex-row md:flex-col gap-4 md:gap-2 items-start w-full overflow-x-auto pb-2 md:pb-0 shrink-0">
                         <FilterButton
                             option={{ value: "all", label: "All" }}
                             activeCategory={activeCategory}
@@ -171,7 +171,7 @@ const AllMovies = () => {
                     ) : filteredMovies.length === 0 ? (
                         <div className="text-gray-400 mt-8 text-center text-lg w-full">No movies found matching your criteria.</div>
                     ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center">
+                        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 justify-items-center">
                             {filteredMovies.map((movie) => (
                                 <MovieCard
                                     onClick={() => navigate(`/movie/${movie.id}`)}

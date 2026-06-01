@@ -43,16 +43,16 @@ const MoviesTable = () => {
     }, [movies, search]);
 
     return (
-        <main className="flex flex-col px-4 md:px-8 flex-1">
+        <main className="flex flex-col px-4 md:px-8 lg:px-12 xl:px-16 flex-1">
             {/* Tabs Navigation */}
             <AdminTabs activeTab="movies" />
 
-            <div className="sticky top-0 z-10 py-4 mb-6 mt-2 flex justify-between items-end bg-[#121111]">
+            <div className="md:sticky md:top-0 z-10 py-4 mb-6 mt-2 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 bg-[#121111]">
                 <div>
                     <h1 className="text-3xl font-bold text-gray-200">Movies Management</h1>
                     <p className="text-sm text-gray-400 mt-1">Manage and update the movie catalogue.</p>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
                     <SearchInput
                         placeholder="Search movies..."
                         value={search}
@@ -68,10 +68,10 @@ const MoviesTable = () => {
                     </Button>
                 </div>
             </div>
-            <div className="flex flex-row gap-6 text-white pb-8">
-                <aside className="flex flex-col gap-4 p-6 w-64 shrink-0 h-fit bg-[#1A1A1A] border border-gray-800 rounded-xl shadow-xl">
-                    <h2 className="text-xl font-semibold text-blue-400 flex items-center gap-2"><FilterIcon />Filters</h2>
-                    <div className="flex flex-col gap-2 items-start">
+            <div className="flex flex-col md:flex-row gap-6 text-white pb-8">
+                <aside className="flex flex-col sm:flex-row md:flex-col gap-4 p-6 w-full md:w-64 shrink-0 h-fit bg-[#1A1A1A] border border-gray-800 rounded-xl shadow-xl justify-between sm:items-center md:items-start">
+                    <h2 className="text-xl font-semibold text-blue-400 flex items-center gap-2 shrink-0"><FilterIcon />Filters</h2>
+                    <div className="flex flex-row md:flex-col gap-4 md:gap-2 items-start w-full overflow-x-auto pb-2 sm:pb-0 shrink-0">
                         <FilterButton
                             option={{ label: "All", value: "all" }}
                             activeCategory={activeStatus}
@@ -108,7 +108,7 @@ const MoviesTable = () => {
                                     <Tr key={movie.id} onClick={() => navigate(`/admin/movies-management/${movie.id}`)}>
                                         <Td className="font-semibold text-white">{movie.title}</Td>
                                         <Td>
-                                            <span className={`px-2 py-1 text-xs font-medium rounded-md ${movie.status === 'now_showing'
+                                            <span className={`px-2 py-1 text-xs font-medium rounded-md whitespace-nowrap ${movie.status === 'now_showing'
                                                 ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
                                                 : 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
                                                 }`}>

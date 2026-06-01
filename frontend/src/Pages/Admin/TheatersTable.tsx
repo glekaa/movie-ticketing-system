@@ -117,15 +117,15 @@ const TheatersTable = () => {
     };
 
     return (
-        <main className="flex flex-col px-4 md:px-8 flex-1">
+        <main className="flex flex-col px-4 md:px-8 lg:px-12 xl:px-16 flex-1">
             <AdminTabs activeTab="theaters" />
 
-            <div className="sticky top-0 z-10 py-4 mb-6 mt-2 flex justify-between items-end bg-[#121111]">
+            <div className="md:sticky md:top-0 z-10 py-4 mb-6 mt-2 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 bg-[#121111]">
                 <div>
                     <h1 className="text-3xl font-bold text-gray-200">Theaters Management</h1>
                     <p className="text-sm text-gray-400 mt-1">Manage physical locations and theater screens.</p>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
                     <SearchInput
                         placeholder="Search theaters..."
                         value={search}
@@ -142,9 +142,9 @@ const TheatersTable = () => {
                 </div>
             </div>
 
-            <div className="flex flex-row gap-6 text-white pb-8">
-                <aside className="flex flex-col gap-6 p-6 w-64 shrink-0 h-fit bg-[#1A1A1A] border border-gray-800 rounded-xl shadow-xl">
-                    <section className="space-y-4">
+            <div className="flex flex-col md:flex-row gap-6 text-white pb-8">
+                <aside className="flex flex-col sm:flex-row md:flex-col gap-6 p-6 w-full md:w-64 shrink-0 h-fit bg-[#1A1A1A] border border-gray-800 rounded-xl shadow-xl justify-between items-stretch">
+                    <section className="space-y-4 flex-1">
                         <h2 className="text-xl font-semibold text-blue-400 flex items-center gap-2">
                             <FilterIcon className="w-5 h-5" /> Locations
                         </h2>
@@ -156,13 +156,15 @@ const TheatersTable = () => {
                         />
                     </section>
 
-                    <hr className="border-gray-800" />
+                    <hr className="border-gray-800 hidden md:block" />
 
-                    <TheatersStats
-                        totalTheaters={stats.totalTheaters}
-                        totalScreens={stats.totalScreens}
-                        totalCapacity={stats.totalCapacity}
-                    />
+                    <div className="flex-1 md:flex-initial">
+                        <TheatersStats
+                            totalTheaters={stats.totalTheaters}
+                            totalScreens={stats.totalScreens}
+                            totalCapacity={stats.totalCapacity}
+                        />
+                    </div>
                 </aside>
 
                 <section className="flex-1 min-w-0">

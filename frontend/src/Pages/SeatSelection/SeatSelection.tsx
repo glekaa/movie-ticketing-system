@@ -243,7 +243,7 @@ const SeatSelection = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
                 {/* Left Area: Screen and Seat Map */}
-                <section className="lg:col-span-2 bg-[#1a1919] border border-white/5 rounded-2xl p-6 md:p-10 shadow-lg flex flex-col justify-center">
+                <section className="lg:col-span-2 bg-[#1a1919] border border-white/5 rounded-2xl p-4 sm:p-6 md:p-10 shadow-lg flex flex-col justify-center">
                     <SeatMap
                         totalRows={screen.total_rows || 8}
                         seatsPerRow={screen.seats_per_row || 10}

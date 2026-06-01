@@ -105,7 +105,7 @@ const Showtimes = ({ movieId }: ShowtimesProps) => {
     const currentTheatersMap = selectedDate ? showtimesByDateAndTheater[selectedDate] : {};
 
     return (
-        <section className="bg-[#141313] rounded-2xl p-6 border border-white/5 sticky top-24">
+        <section className="bg-[#141313] rounded-2xl p-6 border border-white/5 lg:sticky lg:top-24">
             <h2 className="text-xl font-bold mb-6 text-[#E5E2E1]">Select Showtime</h2>
 
             {/* Dates */}

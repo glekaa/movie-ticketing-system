@@ -30,7 +30,7 @@ const GenresTable = () => {
     }
 
     return (
-        <main className="flex flex-col px-4 md:px-8 text-white min-h-screen">
+        <main className="flex flex-col px-4 md:px-8 lg:px-12 xl:px-16 text-white min-h-screen">
 
             <AdminTabs activeTab="genres" />
             <div className="mt-2 py-4">
@@ -39,8 +39,14 @@ const GenresTable = () => {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8 items-start">
-                <GenresTableList genres={genres || []} />
-                <GenreAddForm />
+                {/* Display form on top on mobile/tablet, but on the right (order-2) on desktop */}
+                <div className="lg:order-2 lg:col-span-1 w-full">
+                    <GenreAddForm />
+                </div>
+                {/* Display list below form on mobile/tablet, but on the left (order-1) on desktop */}
+                <div className="lg:order-1 lg:col-span-2 w-full">
+                    <GenresTableList genres={genres || []} />
+                </div>
             </div>
         </main>
     );

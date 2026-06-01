@@ -84,8 +84,8 @@ const Cinemas = () => {
   };
 
   return (
-    <main className="flex flex-col px-4 md:px-8 mb-16 min-h-screen mt-8 relative max-w-7xl mx-auto w-full animate-fade-in">
-      <section className="sticky top-0 bg-[#141313] z-40 py-6 mb-8 border-b border-white/5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <main className="flex flex-col px-4 md:px-8 lg:px-12 xl:px-16 mb-16 min-h-screen mt-8 relative max-w-7xl mx-auto w-full animate-fade-in">
+      <section className="md:sticky md:top-0 bg-[#141313] z-40 py-6 mb-8 border-b border-white/5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-3xl md:text-4xl font-extrabold text-[#E5E2E1] tracking-wide">
             Our Cinemas

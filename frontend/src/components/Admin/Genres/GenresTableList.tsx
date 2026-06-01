@@ -19,7 +19,7 @@ export const GenresTableList = ({ genres }: GenresTableListProps) => {
     }, [genres, search]);
 
     return (
-        <div className="lg:col-span-2 bg-[#1a1919] border border-white/5 rounded-2xl p-6 shadow-lg space-y-6">
+        <div className="bg-[#1a1919] border border-white/5 rounded-2xl p-6 shadow-lg space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                     <h2 className="text-lg font-bold font-['Montserrat']">Available Genres</h2>

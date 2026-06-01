@@ -81,7 +81,7 @@ const Hero = ({ status = "now_showing" }: { status: "now_showing" | "coming_soon
   const allTags = buildMovieTags(currentMovie);
 
   return (
-    <section className="relative w-full h-[70vh] overflow-hidden px-10 pb-20">
+    <section className="relative w-full h-[70vh] overflow-hidden px-6 md:px-10 lg:px-16 pb-12 md:pb-20">
       {movies.map((movie, idx) => (
         <div
           key={movie.id}
@@ -100,12 +100,12 @@ const Hero = ({ status = "now_showing" }: { status: "now_showing" | "coming_soon
       <div
         className={`h-full relative flex flex-col gap-8 justify-end items-start transition-opacity duration-400 ease-in-out ${isFading ? "opacity-0" : "opacity-100"}`}
       >
-        <div className="text-left max-w-lg">
-          <h1 className="text-5xl font-bold text-white uppercase">
+        <div className="text-left max-w-lg lg:max-w-xl xl:max-w-2xl">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white uppercase leading-tight">
             {currentMovie.title}
           </h1>
 
-          <p className="text-md 2xl:text-lg text-gray-300 leading-relaxed mt-4 max-w-3xl">
+          <p className="text-sm md:text-md 2xl:text-lg text-gray-300 leading-relaxed mt-4 max-w-3xl">
             {currentMovie.description}
           </p>
         </div>
@@ -118,13 +118,13 @@ const Hero = ({ status = "now_showing" }: { status: "now_showing" | "coming_soon
           ))}
         </div>
 
-        <div className="flex flex-row items-center gap-4">
-          <div className="flex flex-row gap-2">
-            <Button variant="primary" onClick={() => navigate(`/movie/${currentMovie.id}`)}>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <Button variant="primary" className="w-full sm:w-auto" onClick={() => navigate(`/movie/${currentMovie.id}`)}>
               <Ticket />
               Book Now
             </Button>
-            <Button variant="secondary">
+            <Button variant="secondary" className="w-full sm:w-auto">
               <Play />
               Watch Trailer
             </Button>

@@ -17,7 +17,7 @@ const MoviesList = ({ status = "now_showing" }: { status: "now_showing" | "comin
     });
 
     return (
-        <section className="flex flex-col gap-8 md:gap-12 px-4 md:px-8 mb-12">
+        <section className="flex flex-col gap-5 sm:gap-8 md:gap-12 px-4 md:px-8 mb-6 sm:mb-12">
             <div className="flex flex-row items-center gap-6">
                 <FilterIcon className="text-white w-6 h-6" />
                 <FilterMain />
@@ -38,7 +38,7 @@ const MoviesList = ({ status = "now_showing" }: { status: "now_showing" | "comin
             ) : isError ? (
                 <ErrorState message="Error loading movies" />
             ) :
-                <div className="w-screen relative left-1/2 -translate-x-1/2 flex flex-row gap-6 overflow-x-auto px-4 md:px-8 xl:px-[calc((100vw-1360px)/2+2rem)] pb-8">
+                <div className="w-screen relative left-1/2 -translate-x-1/2 flex flex-row gap-3 sm:gap-6 overflow-x-auto px-4 md:px-8 xl:px-[calc((100vw-1360px)/2+2rem)] pb-4 sm:pb-8">
                     {movies?.map((movie) => (
                         <MovieCard
                             onClick={() => navigate(`/movie/${movie.id}`)}

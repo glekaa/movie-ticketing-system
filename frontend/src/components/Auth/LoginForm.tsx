@@ -12,7 +12,7 @@ import useAuthStore from "../../stores/authStore";
 
 const Login = () => {
     const navigate = useNavigate();
-    const { login: storeLogin, user } = useAuthStore();
+    const { login: storeLogin } = useAuthStore();
 
     const { mutateAsync: login, isPending, isError } = useMutation({
         mutationFn: async (credentials: LoginFormValues) => {
@@ -20,8 +20,8 @@ const Login = () => {
             storeLogin(data.user, data.token);
             return data;
         },
-        onSuccess: () => {
-            user.role === "admin" ? navigate("/admin", { replace: true }) : navigate("/", { replace: true });
+        onSuccess: (data) => {
+            data.user?.role === "admin" ? navigate("/admin", { replace: true }) : navigate("/", { replace: true });
         }
     });
 

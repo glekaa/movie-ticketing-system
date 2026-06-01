@@ -49,9 +49,7 @@ const BasketPage = () => {
     const totalBookingFee = totalTicketsCount * bookingFeePerTicket;
     const grandTotal = ticketSubtotal + totalBookingFee;
 
-    const handleQuantityChange = (itemId: string, newQuantity: number) => {
-        updateQuantity(itemId, newQuantity);
-    };
+
 
     const handleRemoveItem = (itemId: string) => {
         removeFromBasket(itemId);
@@ -113,7 +111,6 @@ const BasketPage = () => {
                             key={item.id}
                             item={item}
                             handleRemoveItem={handleRemoveItem}
-                            handleQuantityChange={handleQuantityChange}
                         />
                     ))}
                 </section>
