@@ -52,7 +52,7 @@ const MoviesList = ({ status = "now_showing" }: { status: "now_showing" | "comin
             ) : isError ? (
                 <ErrorState message="Error loading movies" />
             ) :
-                <div className="w-screen relative left-1/2 -translate-x-1/2 flex flex-row gap-3 sm:gap-6 overflow-x-auto px-4 md:px-8 xl:px-[calc((100vw-1360px)/2+2rem)] pb-4 sm:pb-8">
+                <div className="w-screen relative left-1/2 -translate-x-1/2 flex flex-row gap-3 sm:gap-6 overflow-x-auto scrollbar-none px-4 md:px-8 xl:px-[calc((100vw-1360px)/2+2rem)] pb-4 sm:pb-8">
                     {filteredMovies?.map((movie) => (
                         <MovieCard
                             onClick={() => navigate(`/movie/${movie.id}`)}
