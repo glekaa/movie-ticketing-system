@@ -1,9 +1,16 @@
-from app.schemas.token import Token, TokenData
+from app.schemas.token import (
+    AccessTokenClaims,
+    RefreshRequest,
+    RefreshTokenClaims,
+    Token,
+)
 from app.schemas.user import UserBase, UserCreate, UserUpdate, UserResponse
 
 __all__ = [
+    "AccessTokenClaims",
+    "RefreshRequest",
+    "RefreshTokenClaims",
     "Token",
-    "TokenData",
     "UserBase",
     "UserCreate",
     "UserUpdate",
