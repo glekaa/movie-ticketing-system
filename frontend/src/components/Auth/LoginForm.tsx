@@ -17,7 +17,7 @@ const Login = () => {
     const { mutateAsync: login, isPending, isError } = useMutation({
         mutationFn: async (credentials: LoginFormValues) => {
             const data = await authServices.login(credentials);
-            storeLogin(data.user, data.token);
+            storeLogin(data.user, data.token, data.refreshToken);
             return data;
         },
         onSuccess: (data) => {

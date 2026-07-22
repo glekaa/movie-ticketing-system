@@ -188,4 +188,18 @@ export type User = {
     updated_at: string;
 };
 
+// Wire format returned by POST /auth/login and POST /auth/refresh.
+export type TokenPair = {
+    access_token: string;
+    refresh_token: string;
+    token_type: string;
+};
+
+// What the app holds once a user is signed in.
+export type AuthSession = {
+    user: User;
+    token: string;
+    refreshToken: string;
+};
+
 export type { RegisterFormValues, LoginFormValues } from "../schemas/authSchemas";

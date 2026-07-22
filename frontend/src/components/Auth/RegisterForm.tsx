@@ -17,7 +17,7 @@ const Register = () => {
     const { mutateAsync: registerUser, isPending, isError, error } = useMutation({
         mutationFn: async (credentials: RegisterFormValues) => {
             const data = await authServices.register(credentials);
-            storeLogin(data.user, data.token);
+            storeLogin(data.user, data.token, data.refreshToken);
             return data;
         },
         onSuccess: (data) => {

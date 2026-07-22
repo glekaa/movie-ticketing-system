@@ -5,6 +5,7 @@ import { useState } from "react";
 import MobileMenuModal from "./MobileMenuModal";
 import { useBasket } from "../../context/BasketContext";
 import useAuthStore from "../../stores/authStore";
+import useLogout from "../../hooks/useLogout";
 import Button from "../Elements/Button";
 
 const Header = () => {
@@ -12,7 +13,8 @@ const Header = () => {
   const { basket } = useBasket();
   const totalTickets = basket.reduce((acc, item) => acc + item.quantity, 0);
 
-  const { token, user, logout } = useAuthStore();
+  const { token, user } = useAuthStore();
+  const handleLogout = useLogout();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -59,10 +61,7 @@ const Header = () => {
           <div className="hidden md:flex items-center gap-3">
             <span className="text-xs text-gray-400 font-medium">Hello, <strong className="text-white font-semibold">{user?.username}</strong></span>
             <button
-              onClick={() => {
-                logout();
-                navigate("/");
-              }}
+              onClick={handleLogout}
               className="text-xs font-semibold px-4 py-1.5 rounded-full border border-white/10 hover:bg-white/5 text-gray-400 hover:text-white transition-all cursor-pointer font-['Montserrat']"
             >
               Sign Out

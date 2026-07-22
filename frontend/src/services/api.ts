@@ -6,8 +6,11 @@ const api = axios.create({
     headers: {
         "Content-Type": "application/json",
     },
-    withCredentials: true,
 });
+
+// Bare client for the refresh call. It must not run through the interceptors
+// below, or a failing refresh would recurse into itself.
+export const refreshClient = axios.create({ baseURL: "/api/v1" });
 
 api.interceptors.request.use(
     (config) => {
@@ -40,6 +43,14 @@ api.interceptors.response.use(
         const originalRequest = error.config;
 
         if (error.response?.status === 401 && !originalRequest._retry) {
+            const refreshToken = useAuthStore.getState().refreshToken;
+
+            // Nothing to recover with — this is an anonymous 401, not an expired
+            // session. Let the caller handle it instead of bouncing to /auth/login.
+            if (!refreshToken) {
+                return Promise.reject(error);
+            }
+
             if (isRefreshing) {
                 return new Promise((resolve, reject) => {
                     failedQueue.push({ resolve, reject });
@@ -55,15 +66,15 @@ api.interceptors.response.use(
             isRefreshing = true;
 
             try {
-                const response = await axios.post(
-                    "/api/v1/auth/refresh",
-                    {},
-                    { withCredentials: true }
-                );
+                const response = await refreshClient.post("/auth/refresh", {
+                    refresh_token: refreshToken,
+                });
 
-                const { access_token } = response.data;
+                const { access_token, refresh_token } = response.data;
 
-                useAuthStore.setState({ token: access_token, isInitialized: true });
+                // The server rotates on every refresh, so the old token is already
+                // dead. Store both or the next refresh replays a revoked token.
+                useAuthStore.getState().setTokens(access_token, refresh_token);
                 processQueue(null, access_token);
 
                 originalRequest.headers.Authorization = `Bearer ${access_token}`;
@@ -83,4 +94,3 @@ api.interceptors.response.use(
 );
 
 export default api;
-

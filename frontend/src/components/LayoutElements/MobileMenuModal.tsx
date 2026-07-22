@@ -2,6 +2,7 @@ import { NAV_TABS } from "../../constants/navigation";
 import { useNavigate, useLocation } from "react-router";
 import { X, ChevronRight } from "lucide-react";
 import useAuthStore from "../../stores/authStore";
+import useLogout from "../../hooks/useLogout";
 import Button from "../Elements/Button";
 
 interface MobileMenuModalProps {
@@ -11,7 +12,8 @@ interface MobileMenuModalProps {
 const MobileMenuModal = ({ toggleMenu }: MobileMenuModalProps) => {
     const navigate = useNavigate();
     const { pathname } = useLocation();
-    const { token, user, logout } = useAuthStore();
+    const { token, user } = useAuthStore();
+    const handleLogout = useLogout();
 
     return (
         <>
@@ -63,8 +65,7 @@ const MobileMenuModal = ({ toggleMenu }: MobileMenuModalProps) => {
                                 className="w-full py-2.5 text-xs font-semibold"
                                 onClick={() => {
                                     toggleMenu();
-                                    logout();
-                                    navigate("/");
+                                    handleLogout();
                                 }}
                             >
                                 Sign Out

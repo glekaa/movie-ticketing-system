@@ -4,8 +4,7 @@ import AdminLayout from "./Layout/AdminLayout"
 import { Routes, Route, Outlet } from "react-router";
 import LoadingState from "./components/LayoutElements/LoadingState";
 import { BasketProvider } from "./context/BasketContext";
-import axios from "axios";
-import api from "./services/api";
+import api, { refreshClient } from "./services/api";
 import useAuthStore from "./stores/authStore";
 import PrivateRoute from "./components/Routes/PrivateRoute";
 
@@ -41,21 +40,29 @@ const AdminLayoutWrapper = () => (
 const App = () => {
   useEffect(() => {
     const initializeAuth = async () => {
-      try {
-        const response = await axios.post(
-          "/api/v1/auth/refresh",
-          {},
-          { withCredentials: true }
-        );
-        const { access_token } = response.data;
+      // Rehydrated from localStorage by the store's persist middleware.
+      const refreshToken = useAuthStore.getState().refreshToken;
 
-        useAuthStore.setState({ token: access_token });
+      if (!refreshToken) {
+        useAuthStore.setState({ isInitialized: true });
+        return;
+      }
+
+      try {
+        const response = await refreshClient.post("/auth/refresh", {
+          refresh_token: refreshToken,
+        });
+        const { access_token, refresh_token } = response.data;
+
+        useAuthStore.getState().setTokens(access_token, refresh_token);
 
         const userRes = await api.get("/auth/me");
 
-        useAuthStore.getState().login(userRes.data, access_token);
-      } catch (err) {
-        useAuthStore.setState({ isInitialized: true });
+        useAuthStore.getState().login(userRes.data, access_token, refresh_token);
+      } catch {
+        // The stored token is expired or revoked — drop it so we do not retry
+        // with a dead credential on every page load.
+        useAuthStore.getState().logout();
       }
     };
 
