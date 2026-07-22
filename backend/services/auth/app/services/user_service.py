@@ -1,10 +1,11 @@
 from uuid import UUID
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
+from app.exceptions import UserNotFound
 from app.models.user import User, UserRole
 
 
@@ -20,9 +21,7 @@ class UserService:
         result = await self.db.execute(select(User).where(User.id == user_id))
         user = result.scalars().first()
         if not user:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
-            )
+            raise UserNotFound
         return user
 
     async def update_user_role(self, user_id: UUID, role: UserRole) -> User:

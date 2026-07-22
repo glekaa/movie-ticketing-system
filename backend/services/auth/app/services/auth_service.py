@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime, timedelta, timezone
 
 import jwt
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends
 from pwdlib import PasswordHash
 from pydantic import ValidationError
 from sqlalchemy import select, update
@@ -10,17 +10,20 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import settings
 from app.database import get_db
+from app.exceptions import (
+    EmailAlreadyRegistered,
+    InactiveAccount,
+    InvalidCredentials,
+    InvalidRefreshToken,
+    SessionExpired,
+    UsernameAlreadyTaken,
+)
 from app.models.refresh_token import RefreshToken
 from app.models.user import User
 from app.schemas.token import RefreshTokenClaims, Token
 from app.schemas.user import UserCreate
 
 password_hash = PasswordHash.recommended()
-
-invalid_refresh_exception = HTTPException(
-    status_code=status.HTTP_401_UNAUTHORIZED,
-    detail="Invalid or expired refresh token",
-)
 
 
 class AuthService:
@@ -76,7 +79,7 @@ class AuthService:
             # and its `type` is not the "refresh" Literal.
             return RefreshTokenClaims.model_validate(payload)
         except (jwt.InvalidTokenError, ValidationError):
-            raise invalid_refresh_exception
+            raise InvalidRefreshToken
 
     async def _issue_token_pair(
         self, user: User, session_started_at: datetime
@@ -100,20 +103,14 @@ class AuthService:
         # Check for existing email
         result = await self.db.execute(select(User).where(User.email == user_in.email))
         if result.scalars().first():
-            raise HTTPException(
-                status_code=status.HTTP_409_CONFLICT,
-                detail="Email already registered",
-            )
+            raise EmailAlreadyRegistered
 
         # Check for existing username
         result = await self.db.execute(
             select(User).where(User.username == user_in.username)
         )
         if result.scalars().first():
-            raise HTTPException(
-                status_code=status.HTTP_409_CONFLICT,
-                detail="Username already taken",
-            )
+            raise UsernameAlreadyTaken
 
         user = User(
             email=user_in.email,
@@ -130,17 +127,10 @@ class AuthService:
         user = result.scalars().first()
 
         if not user or not self.verify_password(password, user.hashed_password):
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid username or password",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
+            raise InvalidCredentials
 
         if not user.is_active:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Account is deactivated",
-            )
+            raise InactiveAccount
 
         return user
 
@@ -159,28 +149,25 @@ class AuthService:
         stored = result.scalars().first()
 
         if stored is None:
-            raise invalid_refresh_exception
+            raise InvalidRefreshToken
 
         now = datetime.now(timezone.utc)
 
         # Rotated already, or revoked by logout. Dead either way — this session
         # ends, but other sessions the user has are left alone.
         if stored.is_revoked:
-            raise invalid_refresh_exception
+            raise InvalidRefreshToken
 
         # Belt-and-braces: jwt.decode already enforced `exp`, but the stored
         # copy is authoritative if the two ever disagree.
         if stored.expires_at <= now:
-            raise invalid_refresh_exception
+            raise InvalidRefreshToken
 
         session_age = now - stored.session_started_at
         if session_age > timedelta(days=settings.REFRESH_SESSION_MAX_DAYS):
             stored.is_revoked = True
             await self.db.commit()
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Session expired. Please sign in again.",
-            )
+            raise SessionExpired
 
         user_result = await self.db.execute(
             select(User).where(User.id == stored.user_id)
@@ -188,13 +175,10 @@ class AuthService:
         user = user_result.scalars().first()
 
         if user is None:
-            raise invalid_refresh_exception
+            raise InvalidRefreshToken
 
         if not user.is_active:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Account is deactivated",
-            )
+            raise InactiveAccount
 
         # Rotate: the presented token dies, a new one takes its place. Both the
         # revocation and the new row land in the commit inside _issue_token_pair.
@@ -212,7 +196,7 @@ class AuthService:
         """
         try:
             claims = self._decode_refresh_token(refresh_token)
-        except HTTPException:
+        except InvalidRefreshToken:
             return
 
         await self.db.execute(

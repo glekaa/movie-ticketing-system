@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.error_handlers import register_error_handlers
 from app.routers import genres, movies, showtimes, theaters
 
 origins = [
@@ -17,6 +18,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+register_error_handlers(app)
 
 app.include_router(movies.router, prefix="/api/v1")
 app.include_router(genres.router, prefix="/api/v1")

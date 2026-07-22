@@ -1,11 +1,12 @@
 import uuid
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app.database import get_db
+from app.exceptions import TheaterNotFound
 from app.models.screen import Screen
 from app.models.theater import Theater
 from app.schemas.screen import ScreenBase
@@ -39,9 +40,7 @@ class TheaterService:
         theater = result.scalars().first()
 
         if not theater:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Theater not found"
-            )
+            raise TheaterNotFound
 
         update_data = theater_in.model_dump(exclude_unset=True)
         for field, value in update_data.items():

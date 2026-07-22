@@ -1,12 +1,12 @@
 from uuid import UUID
 
-from fastapi import Depends, HTTPException
-from fastapi import status as http_status
+from fastapi import Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app.database import get_db
+from app.exceptions import MovieNotFound
 from app.models.genre import Genre
 from app.models.movie import Movie, MovieStatus
 from app.schemas.movie import MovieCreate, MovieResponse, MovieUpdate
@@ -44,9 +44,7 @@ class MovieService:
         )
         movie = result.scalars().first()
         if not movie:
-            raise HTTPException(
-                status_code=http_status.HTTP_404_NOT_FOUND, detail="Movie not found"
-            )
+            raise MovieNotFound
 
         # Enrich with TMDB data
         response = MovieResponse.model_validate(movie)
@@ -81,9 +79,7 @@ class MovieService:
         movie = result.scalars().first()
 
         if not movie:
-            raise HTTPException(
-                status_code=http_status.HTTP_404_NOT_FOUND, detail="Movie not found"
-            )
+            raise MovieNotFound
 
         update_data = movie_in.model_dump(exclude_unset=True, exclude={"genre_ids"})
         for key, value in update_data.items():
@@ -107,9 +103,7 @@ class MovieService:
         movie = result.scalars().first()
 
         if not movie:
-            raise HTTPException(
-                status_code=http_status.HTTP_404_NOT_FOUND, detail="Movie not found"
-            )
+            raise MovieNotFound
 
         await self.db.delete(movie)
         await self.db.commit()
