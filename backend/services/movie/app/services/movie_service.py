@@ -65,6 +65,12 @@ class MovieService:
                 select(Genre).where(Genre.id.in_(movie_in.genre_ids))
             )
             new_movie.genres = list(genre_result.scalars().all())
+        else:
+            # Explicitly load-empty: leaving this untouched keeps the
+            # relationship unloaded on the persisted object, and the response
+            # model's later access to `.genres` needs a sync lazy-load that
+            # isn't valid outside an awaited context (MissingGreenlet).
+            new_movie.genres = []
 
         self.db.add(new_movie)
         await self.db.commit()
@@ -95,7 +101,10 @@ class MovieService:
                 movie.genres = list(genre_result.scalars().all())
 
         await self.db.commit()
-        await self.db.refresh(movie)
+        # No db.refresh() here: it would expire (and not eagerly reload)
+        # `genres`, which is already correct in memory from the selectinload
+        # above plus the reassignment, forcing a sync lazy-load at response
+        # serialization time that fails outside an awaited context.
         return movie
 
     async def delete_movie(self, movie_id: UUID) -> None:
